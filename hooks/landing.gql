@@ -1,0 +1,85 @@
+query landingPages(
+  $filter: LandingPageFilter
+  $page: Int
+  $pageSize: Int
+  $orderBy: OrderBy = "createAt_desc"
+) {
+  landingPages: landingPagesConnection(
+    filter: $filter
+    page: $page
+    pageSize: $pageSize
+    orderBy: $orderBy
+  ) {
+    totalPage
+    total: totalCount
+    edges {
+      node {
+        id
+        name
+        description
+        start
+        end
+        stores {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+query landingPosters(
+  $filter: LandingPosterFilter
+  $page: Int
+  $pageSize: Int
+  $orderBy: OrderBy = "createAt_desc"
+) {
+  landingPosters: landingPostersConnection(
+    filter: $filter
+    page: $page
+    pageSize: $pageSize
+    orderBy: $orderBy
+  ) {
+    totalPage
+    total: totalCount
+    edges {
+      node {
+        id
+        name
+        background
+        music
+      }
+    }
+  }
+}
+
+query landingStores(
+  $filter: LandingStoreFilter
+  $page: Int
+  $pageSize: Int
+  $orderBy: OrderBy = "createAt_desc"
+) {
+  landingStores: landingStoresConnection(
+    filter: $filter
+    page: $page
+    pageSize: $pageSize
+    orderBy: $orderBy
+  ) {
+    totalPage
+    total: totalCount
+    edges {
+      node {
+        id
+        name
+        location {
+          province
+          city
+          district
+          street
+        }
+        qrCode
+        leader
+      }
+    }
+  }
+}
