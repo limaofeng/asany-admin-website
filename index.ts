@@ -1,14 +1,9 @@
 import { component, library } from 'sunmao';
+import { dynamic } from 'umi';
 
 import WebSiteSidebar from './components/WebSiteSidebar';
-import {
-  PageDetails,
-  PageList,
-  PosterDetails,
-  PosterList,
-  StoreDetails,
-  StoreList,
-} from './pages/landing';
+
+import LoadingComponent from '@/components/PageLoading';
 
 @library({
   name: 'website',
@@ -19,17 +14,35 @@ class Website {
   @component()
   Sidebar = WebSiteSidebar;
   @component({ name: 'landing.PageList' })
-  PageList = PageList;
+  PageList = dynamic({
+    loader: () => import('./pages/landing/PageList'),
+    loading: LoadingComponent,
+  });
   @component({ name: 'landing.PageDetails' })
-  PageDetails = PageDetails;
+  PageDetails = dynamic({
+    loader: () => import('./pages/landing/PageDetails'),
+    loading: LoadingComponent,
+  });
   @component({ name: 'landing.PosterList' })
-  PosterList = PosterList;
+  PosterList = dynamic({
+    loader: () => import('./pages/landing/PosterList'),
+    loading: LoadingComponent,
+  });
   @component({ name: 'landing.PosterDetails' })
-  PosterDetails = PosterDetails;
+  PosterDetails = dynamic({
+    loader: () => import('./pages/landing/PosterDetails'),
+    loading: LoadingComponent,
+  });
   @component({ name: 'landing.StoreList' })
-  StoreList = StoreList;
+  StoreList = dynamic({
+    loader: () => import('./pages/landing/StoreList'),
+    loading: LoadingComponent,
+  });
   @component({ name: 'landing.StoreDetails' })
-  StoreDetails = StoreDetails;
+  StoreDetails = dynamic({
+    loader: () => import('./pages/landing/StoreDetails'),
+    loading: LoadingComponent,
+  });
 }
 
 export default new Website();

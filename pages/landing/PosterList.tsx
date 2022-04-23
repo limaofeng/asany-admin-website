@@ -4,7 +4,7 @@ import { useLandingPostersQuery } from '../../hooks';
 
 import Controls from '@/components/Controls';
 import { ContentWrapper } from '@/layouts/components';
-import { Button, Card, Empty, Input, Select2, Table } from '@/pages/Metronic/components';
+import { Button, Card, Empty, Input, Select2, Table } from '@/components/Metronic';
 
 function PosterList() {
   const { data } = useLandingPostersQuery({

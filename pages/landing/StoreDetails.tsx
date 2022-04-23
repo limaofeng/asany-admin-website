@@ -1,7 +1,7 @@
 import type { RouteComponentProps } from 'react-router';
 
 import { ContentWrapper } from '@/layouts/components';
-import { Button, Card, DatePicker, Form, Input, Select } from '@/pages/Metronic/components';
+import { Button, Card, Form, Input, Select, Upload } from '@/components/Metronic';
 
 type StoreDetailsProps = RouteComponentProps<{ id: string }>;
 
@@ -11,7 +11,7 @@ function StoreDetails(props: StoreDetailsProps) {
   const isNew = match.params.id == 'new';
 
   return (
-    <ContentWrapper header={isNew ? { title: '新增门店' } : undefined} footer={false}>
+    <ContentWrapper header={isNew ? { title: '新增门店11' } : undefined} footer={false}>
       <Card className="mb-5 mb-xl-10">
         <Card.Header>
           <Card.Title>新增门店</Card.Title>
@@ -22,17 +22,11 @@ function StoreDetails(props: StoreDetailsProps) {
               <Form.Item className="mb-5" name="name" label="名称">
                 <Input solid className="w-400px" />
               </Form.Item>
-              <Form.Item className="my-5" name="stores" label="海报">
+              <Form.Item className="my-5" name="location" label="门店位置">
                 <Select solid className="w-400px" options={[]} />
               </Form.Item>
-              <Form.Item className="my-5" name="stores" label="参加活动的门店">
-                <Select solid className="w-400px" options={[]} />
-              </Form.Item>
-              <Form.Item className="my-5" name="start" label="开始时间">
-                <DatePicker solid className="w-400px" />
-              </Form.Item>
-              <Form.Item className="my-5" name="end" label="截止时间">
-                <DatePicker solid className="w-400px" />
+              <Form.Item className="my-5" name="leader" label="负责人">
+                <Input solid className="w-400px" />
               </Form.Item>
               <Form.Item
                 className="my-5"
@@ -49,7 +43,11 @@ function StoreDetails(props: StoreDetailsProps) {
                 />
               </Form.Item>
             </div>
-            <div className="col-12 col-md-4">123456</div>
+            <div className="col-12 col-md-4">
+              <Form.Item className="mb-5" name="qrCode" label="门店二维码">
+                <Upload.Image width={250} height={250} />
+              </Form.Item>
+            </div>
           </Form>
           <Button>添加门店</Button>
         </Card.Body>
