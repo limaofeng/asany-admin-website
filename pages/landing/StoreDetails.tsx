@@ -45,7 +45,13 @@ function StoreDetails(props: StoreDetailsProps) {
             </div>
             <div className="col-12 col-md-4">
               <Form.Item className="mb-5" name="qrCode" label="门店二维码">
-                <Upload.Image width={250} height={250} />
+                <Upload.Image
+                  width={250}
+                  height={250}
+                  space="orX8kLOV"
+                  crop={{ height: 450, zoomable: false, aspectRatio: 1 }}
+                  backgroundImage="/assets/media/background/qrcode_icon.png"
+                />
               </Form.Item>
             </div>
           </Form>
