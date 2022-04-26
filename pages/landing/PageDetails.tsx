@@ -2,7 +2,7 @@ import type { RouteComponentProps } from 'react-router';
 import Frame from 'react-frame-component';
 
 import { ContentWrapper } from '@/layouts/components';
-import { Button, Card, DatePicker, Device, Form, Input, Select } from '@/components/Metronic';
+import { Button, Card, DatePicker, Device, Form, Input, Select } from '@/metronic';
 
 type PageDetailsProps = RouteComponentProps<{ id: string }>;
 

@@ -1,8 +1,6 @@
 import { component, library } from 'sunmao';
 import { dynamic } from 'umi';
 
-import WebSiteSidebar from './components/WebSiteSidebar';
-
 import LoadingComponent from '@/components/PageLoading';
 
 @library({
@@ -12,7 +10,10 @@ import LoadingComponent from '@/components/PageLoading';
 })
 class Website {
   @component()
-  Sidebar = WebSiteSidebar;
+  Sidebar = dynamic({
+    loader: () => import('./components/WebSiteSidebar'),
+    loading: LoadingComponent,
+  });
   @component({ name: 'landing.PageList' })
   PageList = dynamic({
     loader: () => import('./pages/landing/PageList'),

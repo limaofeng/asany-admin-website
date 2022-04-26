@@ -1,8 +1,30 @@
+mutation createPage($input: LandingPageCreateInput!) {
+  page: createLandingPage(input: $input) {
+    ...LandingPageParts
+  }
+}
+
+mutation updatePage($id: ID!, $input: LandingPageUpdateInput!) {
+  page: updateLandingPage(id: $id, input: $input) {
+    ...LandingPageParts
+  }
+}
+
+mutation deletePage($ids: [ID!]!) {
+  deleteLandingPage(ids: $ids)
+}
+
+query landingPage($id: ID!) {
+  page: landingPage(id: $id) {
+    ...LandingPageParts
+  }
+}
+
 query landingPages(
   $filter: LandingPageFilter
   $page: Int
   $pageSize: Int
-  $orderBy: OrderBy = "createAt_desc"
+  $orderBy: OrderBy = "createdAt_desc"
 ) {
   landingPages: landingPagesConnection(
     filter: $filter
@@ -11,20 +33,35 @@ query landingPages(
     orderBy: $orderBy
   ) {
     totalPage
+    current: currentPage
     total: totalCount
     edges {
       node {
-        id
-        name
-        description
-        start
-        end
-        stores {
-          id
-          name
-        }
+        ...LandingPageParts
       }
     }
+  }
+}
+
+mutation createPoster($input: LandingPosterCreateInput!) {
+  poster: createLandingPoster(input: $input) {
+    ...LandingPosterParts
+  }
+}
+
+mutation updatePoster($id: ID!, $input: LandingPosterUpdateInput!) {
+  poster: updateLandingPoster(id: $id, input: $input) {
+    ...LandingPosterParts
+  }
+}
+
+mutation deletePoster($ids: [ID!]!) {
+  deleteLandingPoster(ids: $ids)
+}
+
+query landingPoster($id: ID!) {
+  poster: landingPoster(id: $id) {
+    ...LandingPosterParts
   }
 }
 
@@ -32,7 +69,7 @@ query landingPosters(
   $filter: LandingPosterFilter
   $page: Int
   $pageSize: Int
-  $orderBy: OrderBy = "createAt_desc"
+  $orderBy: OrderBy = "createdAt_desc"
 ) {
   landingPosters: landingPostersConnection(
     filter: $filter
@@ -41,15 +78,35 @@ query landingPosters(
     orderBy: $orderBy
   ) {
     totalPage
+    current: currentPage
     total: totalCount
     edges {
       node {
-        id
-        name
-        background
-        music
+        ...LandingPosterParts
       }
     }
+  }
+}
+
+mutation updateStore($id: ID!, $input: LandingStoreUpdateInput!) {
+  store: updateLandingStore(id: $id, input: $input) {
+    ...LandingStoreParts
+  }
+}
+
+mutation deleteStore($ids: [ID!]!) {
+  deleteLandingStore(ids: $ids)
+}
+
+mutation createStore($input: LandingStoreCreateInput!) {
+  store: createLandingStore(input: $input) {
+    ...LandingStoreParts
+  }
+}
+
+query landingStore($id: ID!) {
+  store: landingStore(id: $id) {
+    ...LandingStoreParts
   }
 }
 
@@ -57,7 +114,7 @@ query landingStores(
   $filter: LandingStoreFilter
   $page: Int
   $pageSize: Int
-  $orderBy: OrderBy = "createAt_desc"
+  $orderBy: OrderBy = "createdAt_desc"
 ) {
   landingStores: landingStoresConnection(
     filter: $filter
@@ -66,6 +123,8 @@ query landingStores(
     orderBy: $orderBy
   ) {
     totalPage
+    pageSize
+    current: currentPage
     total: totalCount
     edges {
       node {
@@ -76,10 +135,51 @@ query landingStores(
           city
           district
           street
+          detailedAddress
+          fullAddress
         }
         qrCode
         leader
+        description
+        createdAt(format: "yyyy-MM-dd HH:mm")
       }
     }
   }
+}
+
+fragment LandingPageParts on LandingPage {
+  id
+  name
+  description
+  start
+  end
+  stores {
+    id
+    name
+  }
+  createdAt
+}
+
+fragment LandingPosterParts on LandingPoster {
+  id
+  name
+  background
+  music
+  createdAt(format: "yyyy-MM-dd HH:mm")
+}
+
+fragment LandingStoreParts on LandingStore {
+  id
+  name
+  location {
+    province
+    city
+    district
+    street
+    detailedAddress
+  }
+  qrCode
+  leader
+  description
+  createdAt(format: "yyyy-MM-dd HH:mm")
 }

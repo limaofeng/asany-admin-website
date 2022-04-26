@@ -4,7 +4,7 @@ import { useLandingPagesQuery } from '../../hooks';
 
 import Controls from '@/components/Controls';
 import { ContentWrapper } from '@/layouts/components';
-import { Button, Card, Empty, Input, Select2, Table } from '@/components/Metronic';
+import { Button, Card, Empty, Input, Select2, Table } from '@/metronic';
 
 function PageList() {
   const { data } = useLandingPagesQuery({
