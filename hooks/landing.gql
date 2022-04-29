@@ -148,7 +148,7 @@ query landingStores(
           district
           street
           detailedAddress
-          fullAddress
+          fullAddress(excludeDetailed: true)
         }
         qrCode
         leader

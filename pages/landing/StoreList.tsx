@@ -312,7 +312,7 @@ function StoreList(props: StoreListProps) {
                       key: 'address.street',
                       dataIndex: 'address.fullAddress',
                       title: '门店地址',
-                      className: 'w-350px',
+                      className: 'w-250px',
                       sorter: true,
                       sortOrder: sorter.field == 'location.street' ? sorter.order : undefined,
                     },
