@@ -26,6 +26,9 @@ query landingPages(
   $pageSize: Int
   $orderBy: OrderBy = "createdAt_desc"
 ) {
+  total: landingPagesConnection(pageSize: 1) {
+    totalCount
+  }
   landingPages: landingPagesConnection(
     filter: $filter
     page: $page
@@ -33,6 +36,7 @@ query landingPages(
     orderBy: $orderBy
   ) {
     totalPage
+    pageSize
     current: currentPage
     total: totalCount
     edges {
@@ -71,6 +75,9 @@ query landingPosters(
   $pageSize: Int
   $orderBy: OrderBy = "createdAt_desc"
 ) {
+  total: landingPostersConnection(pageSize: 1) {
+    totalCount
+  }
   landingPosters: landingPostersConnection(
     filter: $filter
     page: $page
@@ -78,6 +85,7 @@ query landingPosters(
     orderBy: $orderBy
   ) {
     totalPage
+    pageSize
     current: currentPage
     total: totalCount
     edges {
@@ -116,6 +124,9 @@ query landingStores(
   $pageSize: Int
   $orderBy: OrderBy = "createdAt_desc"
 ) {
+  total: landingStoresConnection(pageSize: 1) {
+    totalCount
+  }
   landingStores: landingStoresConnection(
     filter: $filter
     page: $page
@@ -129,8 +140,9 @@ query landingStores(
     edges {
       node {
         id
+        code
         name
-        location {
+        address {
           province
           city
           district
@@ -150,14 +162,20 @@ query landingStores(
 fragment LandingPageParts on LandingPage {
   id
   name
+  status
   description
-  start
-  end
+  start(format: "yyyy-MM-dd HH:mm")
+  end(format: "yyyy-MM-dd HH:mm")
+  poster {
+    id
+    name
+    background
+  }
   stores {
     id
     name
   }
-  createdAt
+  createdAt(format: "yyyy-MM-dd HH:mm")
 }
 
 fragment LandingPosterParts on LandingPoster {
@@ -165,21 +183,36 @@ fragment LandingPosterParts on LandingPoster {
   name
   background
   music
+  description
   createdAt(format: "yyyy-MM-dd HH:mm")
 }
 
 fragment LandingStoreParts on LandingStore {
   id
+  code
   name
-  location {
+  address {
     province
     city
     district
     street
     detailedAddress
   }
+  location {
+    longitude
+    latitude
+  }
   qrCode
   leader
   description
   createdAt(format: "yyyy-MM-dd HH:mm")
+}
+query geocode($address: String, $city: String) {
+  amapOpenAPI {
+    geocodes: geocode_geo(city: $city, address: $address) {
+      adcode
+      district
+      location
+    }
+  }
 }

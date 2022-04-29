@@ -4,19 +4,37 @@ import type { RouteComponentProps } from 'react-router';
 
 import {
   useCreateStoreMutation,
+  useGeocodeLazyQuery,
   useLandingStoreLazyQuery,
   useUpdateStoreMutation,
 } from '../../hooks';
 
 import { ContentWrapper } from '@/layouts/components';
-import { AreaPicker, BlockUI, Button, Card, Form, Input, Modal, Toast, Upload } from '@/metronic';
+import {
+  AreaPicker,
+  BlockUI,
+  Button,
+  Card,
+  Form,
+  Input,
+  Modal,
+  Spin,
+  Toast,
+  Upload,
+} from '@/metronic';
+import { useAreas } from '@/metronic/hooks';
 
 type StoreDetailsProps = RouteComponentProps<{ id: string }>;
 
 function StoreDetails(props: StoreDetailsProps) {
   const { match, history } = props;
 
+  const [, { loadAddress }] = useAreas();
+
   const [loadStore, { data: viewData, loading: getLoading }] = useLandingStoreLazyQuery({
+    fetchPolicy: 'cache-and-network',
+  });
+  const [loadGeocode, { loading: geoLoading }] = useGeocodeLazyQuery({
     fetchPolicy: 'cache-and-network',
   });
   const [createStore, { loading: createSubmiting }] = useCreateStoreMutation({});
@@ -27,24 +45,14 @@ function StoreDetails(props: StoreDetailsProps) {
   const form = Form.useForm();
 
   const handleSave = useCallback(async () => {
-    const { detailedAddress, location = [], ...values } = await form.validateFields();
-
-    const [street, district, city, province] = [...location].reverse();
-
-    const _location = {
-      detailedAddress,
-      street,
-      district,
-      city,
-      province,
-    };
+    const { detailedAddress, address, ...values } = await form.validateFields();
 
     if (isNew) {
       await createStore({
         variables: {
           input: {
             ...values,
-            location: _location,
+            address: { ...address, detailedAddress },
           },
         },
       });
@@ -54,7 +62,7 @@ function StoreDetails(props: StoreDetailsProps) {
           id: match.params.id,
           input: {
             ...values,
-            location: _location,
+            address: { ...address, detailedAddress },
           },
         },
       });
@@ -100,13 +108,12 @@ function StoreDetails(props: StoreDetailsProps) {
         }
         return;
       }
-      const { province, city, district, street, detailedAddress } = store.location || {};
-      const location = store.location
-        ? [province, city, district, street].filter((item) => !!item)
-        : [];
+      const { __typename: x, ...location } = store.location || {};
+      const { __typename: y, detailedAddress, ...address } = store.address || {};
       form.setFieldsValue({
         ...store,
-        location: location,
+        address,
+        location,
         detailedAddress,
         qrCode: store.qrCode?.id,
       });
@@ -115,6 +122,68 @@ function StoreDetails(props: StoreDetailsProps) {
       abortController.abort();
     };
   }, [form, loadStore, history, match.params.id]);
+
+  const handlePasteAddress = useCallback(
+    async (e: React.ClipboardEvent) => {
+      const address = form.getFieldValue('address');
+      const location = form.getFieldValue('location');
+      if (!!address) {
+        return;
+      }
+      let detailedAddress = e.clipboardData.getData('text/plain');
+
+      if (!['省', '市', '区', '县'].some((k) => detailedAddress.includes(k))) {
+        return;
+      }
+
+      const { data: _data } = await loadGeocode({
+        variables: {
+          address: detailedAddress,
+        },
+      });
+
+      const geocode = _data!.amapOpenAPI!.geocodes[0];
+
+      const _address = await loadAddress(geocode.adcode!);
+
+      const index = detailedAddress.indexOf(geocode.district!);
+      if (index != -1) {
+        detailedAddress = detailedAddress.substring(index + geocode.district!.length);
+      }
+
+      if (location == null) {
+        const [longitude, latitude] = geocode.location!.split(',');
+        form.setFieldsValue({
+          address: _address,
+          detailedAddress,
+          location: { longitude, latitude },
+        });
+      } else {
+        form.setFieldsValue({ address: _address, detailedAddress });
+      }
+    },
+    [form, loadAddress, loadGeocode],
+  );
+
+  const handleGeolocation = useCallback(async () => {
+    const values = form.getFieldsValue();
+    if (!values.address || !values.detailedAddress) {
+      Modal.warning({
+        content: '请确保地区与详细地址已经录入',
+        timer: 3000,
+        timerProgressBar: true,
+      });
+      return;
+    }
+    const { data: _data } = await loadGeocode({
+      variables: {
+        city: values.address[values.address.length - 1],
+        address: values.detailedAddress,
+      },
+    });
+    const [longitude, latitude] = _data!.amapOpenAPI!.geocodes[0].location!.split(',');
+    form.setFieldsValue({ location: { longitude, latitude } });
+  }, [form, loadGeocode]);
 
   return (
     <ContentWrapper header={isNew ? { title: '新增门店' } : undefined} footer={false}>
@@ -131,17 +200,69 @@ function StoreDetails(props: StoreDetailsProps) {
               <div className="col-12 col-md-8">
                 <Form.Item
                   className="mb-5"
+                  name="code"
+                  label="店号"
+                  rules={[{ required: true, message: '店号不能为空' }]}
+                  help="请尽量保证店铺编号的唯一性"
+                >
+                  <Input solid className="w-400px" />
+                </Form.Item>
+                <Form.Item
+                  className="mb-5"
                   name="name"
                   label="名称"
                   rules={[{ required: true, message: '名称不能为空' }]}
                 >
                   <Input solid className="w-400px" />
                 </Form.Item>
-                <Form.Item className="my-5" name="location" label="门店位置">
-                  <AreaPicker solid className="w-400px" placeholder="--请选择--" />
+                <Form.Item className="my-5" name="address" label="所在地区">
+                  <AreaPicker
+                    solid
+                    resultType="object"
+                    className="w-400px"
+                    ends="district"
+                    placeholder="--请选择--"
+                  />
                 </Form.Item>
-                <Form.Item className="my-5" name="detailedAddress" label="详细地址">
-                  <Input solid className="w-400px" />
+                <Form.Item
+                  className="my-5"
+                  name="detailedAddress"
+                  label="详细地址"
+                  help="直接粘贴完整地址,会自动识别所在地区与地理位置"
+                >
+                  <Input.TextArea solid className="w-400px" onPaste={handlePasteAddress} />
+                </Form.Item>
+                <Form.Item
+                  className="my-5"
+                  labelClassName="d-inline-flex align-items-center"
+                  label={
+                    <>
+                      地理位置
+                      <a
+                        onClick={geoLoading ? undefined : handleGeolocation}
+                        className="ps-2 cursor-pointer"
+                      >
+                        {geoLoading ? '识别中,请稍等...' : '通过地址识别'}
+                      </a>
+                      <Spin
+                        className="text-primary d-inline-flex align-items-center ms-2"
+                        size="small"
+                        spinning={geoLoading}
+                      />
+                    </>
+                  }
+                  help="高德坐标系经纬度，且不超过6位小数，均不填则自动识别"
+                >
+                  <Input.Group solid className="w-400px">
+                    <Input.Group.Text>经度</Input.Group.Text>
+                    <Form.Item noStyle name={['location', 'longitude']}>
+                      <Input />
+                    </Form.Item>
+                    <Input.Group.Text>纬度</Input.Group.Text>
+                    <Form.Item noStyle name={['location', 'latitude']}>
+                      <Input />
+                    </Form.Item>
+                  </Input.Group>
                 </Form.Item>
                 <Form.Item className="my-5" name="leader" label="负责人">
                   <Input solid className="w-400px" />

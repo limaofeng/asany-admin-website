@@ -11,7 +11,6 @@ import { LandingStoresDocument, useDeleteStoreMutation, useLandingStoresQuery } 
 import { Controls } from '@/components';
 import { ContentWrapper } from '@/layouts/components';
 import {
-  Badge,
   BlockUI,
   Button,
   Card,
@@ -29,13 +28,10 @@ import type { Sorter } from '@/metronic/typings';
 type ActionsProps = {
   history: History;
   data: LandingStore;
+  onDelete: (...ids: string[]) => Promise<number>;
 };
 
-function Actions({ data, history }: ActionsProps) {
-  const [deleteStore] = useDeleteStoreMutation({
-    refetchQueries: [LandingStoresDocument],
-  });
-
+function Actions({ data, history, onDelete }: ActionsProps) {
   const handleDelete = useCallback(
     async (_data: LandingStore) => {
       const message = `确定删除门店 “${_data.name}” 吗？`;
@@ -48,18 +44,19 @@ function Actions({ data, history }: ActionsProps) {
             <p>删除的操作不可逆,请谨慎操作</p>
           </>
         ),
+        okClassName: 'btn-danger',
         okText: '删除',
       });
       if (!result.isConfirmed) {
         return;
       }
-      await deleteStore({ variables: { ids: [_data.id] } });
+      await onDelete(_data.id);
       Toast.success(`门店 “${_data.name}” 删除成功`, 2000, {
         placement: 'bottom-start',
         progressBar: true,
       });
     },
-    [deleteStore],
+    [onDelete],
   );
 
   const handleMenuClick = useCallback(
@@ -125,11 +122,15 @@ function StoreList(props: StoreListProps) {
     };
   }, [variables.orderBy]);
 
+  const [deleteStore] = useDeleteStoreMutation({
+    refetchQueries: [LandingStoresDocument],
+  });
   const { data, loading } = useLandingStoresQuery({
     fetchPolicy: 'cache-and-network',
     variables,
   });
 
+  const total = data?.total.totalCount || 0;
   const pagination = data?.landingStores || { total: 0, current: 1 };
 
   const stores = useMemo(() => {
@@ -161,9 +162,77 @@ function StoreList(props: StoreListProps) {
     [history, location.pathname, variables.filter?.name_contains],
   );
 
+  const handleDelete = useCallback(
+    async (...ids: string[]) => {
+      const { data: dresult } = await deleteStore({
+        variables: {
+          ids,
+        },
+      });
+      return dresult?.deleteLandingStore || 0;
+    },
+    [deleteStore],
+  );
+
+  const handleDeleteInBatch = useCallback(
+    (selectedRowKeys: string[]) => async () => {
+      const message = `确定删除选中的, 共 ${selectedRowKeys.length} 个门店吗？`;
+      const result = await Modal.confirm({
+        title: '确定删除',
+        content: (
+          <>
+            <p className="tip-confirm">{message}</p>
+            <p>删除的操作不可逆,请谨慎操作</p>
+          </>
+        ),
+        okClassName: 'btn-danger',
+        okText: '删除',
+      });
+      if (!result.isConfirmed) {
+        return;
+      }
+      await handleDelete(...selectedRowKeys);
+      Toast.success(`门店批量删除成功`, 2000, {
+        placement: 'bottom-start',
+        progressBar: true,
+      });
+    },
+    [handleDelete],
+  );
+
+  const tableToolbar = useMemo(() => {
+    return (selectedRowKeys: string[]) => {
+      return (
+        <div>
+          <Button color="success" onClick={handleDeleteInBatch(selectedRowKeys)} variant={false}>
+            批量删除
+          </Button>
+        </div>
+      );
+    };
+  }, [handleDeleteInBatch]);
+
   return (
     <ContentWrapper footer={false}>
-      {!pagination.total && !loading ? (
+      <div className="d-flex flex-wrap flex-stack pb-7">
+        <div className="d-flex flex-wrap align-items-center">
+          <h3 className="fw-bolder me-5">门店 ({total})</h3>
+          <Input.Search
+            onSearch={handleSearch}
+            defaultValue={variables.filter?.name_contains}
+            placeholder="搜索"
+            className="border-body bg-body w-250px"
+          />
+        </div>
+        <Controls>
+          <div className="d-flex my-0">
+            <Button as={Link} to="/website/landing/stores/new">
+              新增门店
+            </Button>
+          </div>
+        </Controls>
+      </div>
+      {!total && !loading ? (
         <Card className="mb-5 mb-xl-10">
           <Empty
             title="还没有门店"
@@ -177,31 +246,35 @@ function StoreList(props: StoreListProps) {
         </Card>
       ) : (
         <>
-          <div className="d-flex flex-wrap flex-stack pb-7">
-            <div className="d-flex flex-wrap align-items-center">
-              <h3 className="fw-bolder me-5">门店 ({pagination.total})</h3>
-              <Input.Search
-                onSearch={handleSearch}
-                defaultValue={variables.filter?.name_contains}
-                placeholder="搜索"
-                className="border-body bg-body w-250px"
-              />
-            </div>
-            <Controls>
-              <div className="d-flex my-0">
-                <Button as={Link} to="/website/landing/stores/new">
-                  新增门店
-                </Button>
-              </div>
-            </Controls>
-          </div>
           <Card className="mb-5 mb-xl-10">
             <Card.Body>
               <BlockUI overlayClassName="bg-white bg-opacity-25" loading={loading}>
                 <Table
                   hover
                   rowKey="id"
+                  rowSelection={{
+                    type: 'checkbox',
+                    renderTitle: (size) => (
+                      <>
+                        已选中<span className="mx-2">{size}</span>个门店
+                      </>
+                    ),
+                    toolbar: tableToolbar,
+                  }}
+                  noRowsRenderer={() => (
+                    <Empty
+                      description="列表数据为空"
+                      image="/assets/media/illustrations/sigma-1/5.png"
+                    />
+                  )}
                   columns={[
+                    {
+                      key: 'code',
+                      title: '店号',
+                      sorter: true,
+                      sortOrder: sorter.field == 'code' ? sorter.order : undefined,
+                      className: 'w-80px',
+                    },
                     {
                       key: 'name',
                       title: '名称',
@@ -209,32 +282,37 @@ function StoreList(props: StoreListProps) {
                       sortOrder: sorter.field == 'name' ? sorter.order : undefined,
                       render(name, record) {
                         return (
-                          <div className="ps-2">
+                          <div>
                             <Link
                               className="text-gray-700"
                               to={`/website/landing/stores/${record.id}`}
                             >
                               {name}
                             </Link>
-                            {record.qrCode && (
-                              <Badge className="ms-3" size="sm" color="success">
-                                已上传二维码
-                              </Badge>
-                            )}
                           </div>
                         );
                       },
                     },
                     {
-                      key: 'leader',
-                      title: '负责人',
-                      className: 'w-200px',
+                      key: 'qrCode',
+                      title: '二维码',
+                      className: 'w-100px',
+                      render(file) {
+                        return file ? (
+                          <img
+                            src={process.env.STORAGE_URL + `/preview/${file.id}`}
+                            className="h-30px w-30px"
+                          />
+                        ) : (
+                          <Icon className="svg-icon-2qx text-muted" name="Bootstrap/qr-code" />
+                        );
+                      },
                     },
                     {
-                      key: 'location.street',
-                      dataIndex: 'location.fullAddress',
+                      key: 'address.street',
+                      dataIndex: 'address.fullAddress',
                       title: '门店地址',
-                      className: 'w-300px',
+                      className: 'w-350px',
                       sorter: true,
                       sortOrder: sorter.field == 'location.street' ? sorter.order : undefined,
                     },
@@ -250,7 +328,9 @@ function StoreList(props: StoreListProps) {
                       title: '操作',
                       className: 'w-150px',
                       render: (_, record) => {
-                        return <Actions history={props.history} data={record} />;
+                        return (
+                          <Actions onDelete={handleDelete} history={props.history} data={record} />
+                        );
                       },
                     },
                   ]}
