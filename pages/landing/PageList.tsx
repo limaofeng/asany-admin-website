@@ -146,20 +146,29 @@ function PageList(props: PageListProps) {
   const [deletePage] = useDeletePageMutation({
     refetchQueries: [LandingPagesDocument],
   });
-  const { data, loading } = useLandingPagesQuery({
+  const { data, loading, previousData } = useLandingPagesQuery({
     fetchPolicy: 'cache-and-network',
     variables,
   });
 
-  const total = data?.total.totalCount || 0;
-  const pagination = data?.landingPages || { total: 0, current: 1 };
-
-  const pages = useMemo(() => {
-    if (!data?.landingPages) {
-      return [];
+  const total = useMemo(() => {
+    if (loading) {
+      return previousData?.total.totalCount || 0;
     }
-    return data?.landingPages.edges.map((item) => item.node);
-  }, [data?.landingPages]);
+    return data?.total.totalCount || 0;
+  }, [data?.total.totalCount, loading, previousData?.total]);
+  const pagination = useMemo(() => {
+    if (loading) {
+      return previousData?.landingPages || { total: 0, current: 1 };
+    }
+    return data?.landingPages || { total: 0, current: 1 };
+  }, [data?.landingPages, loading, previousData?.landingPages]);
+  const pages = useMemo(() => {
+    if (loading) {
+      return (previousData?.landingPages?.edges || []).map((item) => item.node);
+    }
+    return (data?.landingPages?.edges || []).map((item) => item.node);
+  }, [data?.landingPages, loading, previousData?.landingPages]);
 
   const handleSearch = useCallback(
     (text) => {
@@ -313,21 +322,20 @@ function PageList(props: PageListProps) {
                       },
                     },
                     {
-                      key: 'status',
-                      title: '状态',
-                      render(value) {
-                        const status = allStatus.find((it) => it.value == value);
-                        return <Badge color={status?.color as any}>{status?.label}</Badge>;
-                      },
-                    },
-                    {
                       key: 'stores',
                       title: '门店',
-                      render: (stores) => stores.map((store: LandingStore) => store.name).join(','),
+                      render: (stores) => (
+                        <div className="d-flex tw-truncate overflow-hidden pe-2">
+                          <span className="tw-text-ellipsis tw-truncate overflow-hidden">
+                            {stores.map((store: LandingStore) => store.name).join(',')}
+                          </span>
+                          <span>共 {stores.length} 家门店</span>
+                        </div>
+                      ),
                     },
                     {
                       key: 'poster',
-                      title: '活动',
+                      title: '海报',
                       className: 'w-100px',
                       render(poster) {
                         return poster?.background ? (
@@ -343,9 +351,13 @@ function PageList(props: PageListProps) {
                       },
                     },
                     {
-                      key: 'end',
-                      className: 'w-150px',
-                      title: '结束时间',
+                      key: 'status',
+                      title: '状态',
+                      className: 'w-100px',
+                      render(value) {
+                        const status = allStatus.find((it) => it.value == value);
+                        return <Badge color={status?.color as any}>{status?.label}</Badge>;
+                      },
                     },
                     {
                       key: 'createdAt',

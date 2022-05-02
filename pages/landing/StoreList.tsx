@@ -125,20 +125,29 @@ function StoreList(props: StoreListProps) {
   const [deleteStore] = useDeleteStoreMutation({
     refetchQueries: [LandingStoresDocument],
   });
-  const { data, loading } = useLandingStoresQuery({
+  const { data, loading, previousData } = useLandingStoresQuery({
     fetchPolicy: 'cache-and-network',
     variables,
   });
 
-  const total = data?.total.totalCount || 0;
-  const pagination = data?.landingStores || { total: 0, current: 1 };
-
-  const stores = useMemo(() => {
-    if (!data?.landingStores) {
-      return [];
+  const total = useMemo(() => {
+    if (loading) {
+      return previousData?.total.totalCount || 0;
     }
-    return data?.landingStores.edges.map((item) => item.node);
-  }, [data?.landingStores]);
+    return data?.total.totalCount || 0;
+  }, [data?.total.totalCount, loading, previousData?.total]);
+  const pagination = useMemo(() => {
+    if (loading) {
+      return previousData?.landingStores || { total: 0, current: 1 };
+    }
+    return data?.landingStores || { total: 0, current: 1 };
+  }, [data?.landingStores, loading, previousData?.landingStores]);
+  const stores = useMemo(() => {
+    if (loading) {
+      return (previousData?.landingStores?.edges || []).map((item) => item.node);
+    }
+    return (data?.landingStores?.edges || []).map((item) => item.node);
+  }, [data?.landingStores, loading, previousData?.landingStores]);
 
   const handleSearch = useCallback(
     (text) => {

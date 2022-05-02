@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
 import type { RouteComponentProps } from 'react-router';
-import Frame from 'react-frame-component';
+// import Frame from 'react-frame-component';
 
 import {
   useCreatePageMutation,
@@ -171,7 +171,6 @@ function PageDetails(props: PageDetailsProps) {
                 </Form.Item>
                 <Form.Item dependencies={['start']} noStyle={true}>
                   {() => {
-                    console.log('start', form.getFieldValue('start'), form.getFieldsValue());
                     return (
                       <Form.Item className="my-5" name="end" label="截止时间">
                         <DatePicker
@@ -201,13 +200,9 @@ function PageDetails(props: PageDetailsProps) {
               </div>
               <div className="col-12 col-md-4">
                 <Device.iPhoneX>
-                  <Frame
-                    style={{ width: '100%' }}
-                    initialContent='<!DOCTYPE html><html><head></head><body><div id="root"></div></body></html>'
-                    mountTarget="#root"
-                  >
-                    <span>123123123</span>
-                  </Frame>
+                  {/* <Frame style={{ width: '100%', height: '100%' }} initialContent={''} mountTarget="#root">
+                    xxx
+                  </Frame> */}
                 </Device.iPhoneX>
               </div>
             </Form>

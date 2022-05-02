@@ -130,20 +130,29 @@ function PosterList(props: PosterListProps) {
   const [deletePoster] = useDeletePosterMutation({
     refetchQueries: [LandingPostersDocument],
   });
-  const { data, loading } = useLandingPostersQuery({
+  const { data, loading, previousData } = useLandingPostersQuery({
     fetchPolicy: 'cache-and-network',
     variables,
   });
 
-  const total = data?.total.totalCount || 0;
-  const pagination = data?.landingPosters || { total: 0, current: 1 };
-
-  const posters = useMemo(() => {
-    if (!data?.landingPosters) {
-      return [];
+  const total = useMemo(() => {
+    if (loading) {
+      return previousData?.total.totalCount || 0;
     }
-    return data?.landingPosters.edges.map((item) => item.node);
-  }, [data?.landingPosters]);
+    return data?.total.totalCount || 0;
+  }, [data?.total.totalCount, loading, previousData?.total]);
+  const pagination = useMemo(() => {
+    if (loading) {
+      return previousData?.landingPosters || { total: 0, current: 1 };
+    }
+    return data?.landingPosters || { total: 0, current: 1 };
+  }, [data?.landingPosters, loading, previousData?.landingPosters]);
+  const posters = useMemo(() => {
+    if (loading) {
+      return (previousData?.landingPosters?.edges || []).map((item) => item.node);
+    }
+    return (data?.landingPosters?.edges || []).map((item) => item.node);
+  }, [data?.landingPosters, loading, previousData?.landingPosters]);
 
   const handleSearch = useCallback(
     (text) => {
