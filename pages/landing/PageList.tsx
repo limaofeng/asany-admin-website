@@ -1,5 +1,6 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
+import { QRCodeCanvas } from 'qrcode.react';
 import { Link } from 'umi';
 import type { History } from 'history';
 import type { RouteComponentProps } from 'react-router';
@@ -11,7 +12,6 @@ import { LandingPagesDocument, useDeletePageMutation, useLandingPagesQuery } fro
 import Controls from '@/components/Controls';
 import { ContentWrapper } from '@/layouts/components';
 import {
-  Badge,
   BlockUI,
   Button,
   Card,
@@ -20,7 +20,6 @@ import {
   Input,
   Menu,
   Modal,
-  Select2,
   Table,
   Toast,
 } from '@/metronic';
@@ -30,10 +29,11 @@ import type { Sorter } from '@/metronic/typings';
 type ActionsProps = {
   history: History;
   data: LandingPage;
+  onShowQRCode: (url: string) => void;
   onDelete: (...ids: string[]) => Promise<number>;
 };
 
-function Actions({ data, history, onDelete }: ActionsProps) {
+function Actions({ data, history, onDelete, onShowQRCode }: ActionsProps) {
   const handleDelete = useCallback(
     async (_data: LandingPage) => {
       const message = `确定删除活动 “${_data.name}” 吗？`;
@@ -67,9 +67,11 @@ function Actions({ data, history, onDelete }: ActionsProps) {
         history.push(`/website/landing/pages/${data.id}`);
       } else if (event.key == 'delete') {
         handleDelete(data);
+      } else if (event.key == 'preview') {
+        onShowQRCode(process.env.MOBILE_URL + '/lps/' + data.id);
       }
     },
-    [data, handleDelete, history],
+    [data, handleDelete, history, onShowQRCode],
   );
 
   return (
@@ -83,7 +85,7 @@ function Actions({ data, history, onDelete }: ActionsProps) {
             编辑
           </Menu.Item>
           <Menu.Separator />
-          {data.status == 'DRAFT' && (
+          {/* {data.status == 'DRAFT' && (
             <Menu.Item key="publish" className="px-3">
               发布
             </Menu.Item>
@@ -92,7 +94,10 @@ function Actions({ data, history, onDelete }: ActionsProps) {
             <Menu.Item key="cancel" className="px-3">
               取消活动
             </Menu.Item>
-          )}
+          )} */}
+          <Menu.Item key="preview" className="px-3">
+            预览
+          </Menu.Item>
           <Menu.Separator />
           <Menu.Item key="delete" className="px-3 actions-delete">
             删除
@@ -109,17 +114,27 @@ function Actions({ data, history, onDelete }: ActionsProps) {
   );
 }
 
-const allStatus = [
-  { label: '草稿', value: 'DRAFT', color: 'secondary' },
-  { label: '进行中', value: 'PUBLISHED', color: 'success' },
-  { label: '取消', value: 'SUSPEND', color: 'light' },
-  { label: '结束', value: 'COMPLETED', color: 'light' },
-];
+// const allStatus = [
+//   { label: '草稿', value: 'DRAFT', color: 'secondary' },
+//   { label: '进行中', value: 'PUBLISHED', color: 'success' },
+//   { label: '取消', value: 'SUSPEND', color: 'light' },
+//   { label: '结束', value: 'COMPLETED', color: 'light' },
+// ];
 
 type PageListProps = RouteComponentProps<any>;
 
 function PageList(props: PageListProps) {
   const { history, location } = props;
+
+  const [qrCode, setQrCode] = useState<string>();
+
+  const handleOpenQRCode = useCallback((url: string) => {
+    setQrCode(url);
+  }, []);
+
+  const handleCloseQRCode = useCallback(() => {
+    setQrCode(undefined);
+  }, []);
 
   const variables = useMemo(() => {
     const { q, ...query } = (props.location as any).query;
@@ -256,11 +271,11 @@ function PageList(props: PageListProps) {
         </div>
         <Controls>
           <div className="d-flex my-0">
-            <Select2
+            {/* <Select2
               className="border-body bg-body w-150px me-5"
               placeholder="状态"
               options={[{ label: '全部', value: 'all' }, ...allStatus]}
-            />
+            /> */}
             <Button as={Link} variant="primary" to="/website/landing/pages/new">
               新增活动
             </Button>
@@ -350,15 +365,15 @@ function PageList(props: PageListProps) {
                         );
                       },
                     },
-                    {
-                      key: 'status',
-                      title: '状态',
-                      className: 'w-100px',
-                      render(value) {
-                        const status = allStatus.find((it) => it.value == value);
-                        return <Badge color={status?.color as any}>{status?.label}</Badge>;
-                      },
-                    },
+                    // {
+                    //   key: 'status',
+                    //   title: '状态',
+                    //   className: 'w-100px',
+                    //   render(value) {
+                    //     const status = allStatus.find((it) => it.value == value);
+                    //     return <Badge color={status?.color as any}>{status?.label}</Badge>;
+                    //   },
+                    // },
                     {
                       key: 'createdAt',
                       title: '创建时间',
@@ -374,6 +389,7 @@ function PageList(props: PageListProps) {
                         return (
                           <Actions
                             onDelete={handleDelete}
+                            onShowQRCode={handleOpenQRCode}
                             history={props.history}
                             data={record as any}
                           />
@@ -388,6 +404,20 @@ function PageList(props: PageListProps) {
               </BlockUI>
             </Card.Body>
           </Card>
+          <Modal
+            title="预览二维码"
+            dialogClassName="w-250px"
+            onCancel={handleCloseQRCode}
+            visible={!!qrCode}
+            okButtonProps={{
+              style: { display: 'none' },
+            }}
+          >
+            <div className="d-inline-block">
+              {!!qrCode && <QRCodeCanvas size={200} value={qrCode} />}
+            </div>
+            <span>使用手机扫码二维码预览</span>
+          </Modal>
         </>
       )}
     </ContentWrapper>

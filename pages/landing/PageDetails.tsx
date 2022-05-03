@@ -200,9 +200,21 @@ function PageDetails(props: PageDetailsProps) {
               </div>
               <div className="col-12 col-md-4">
                 <Device.iPhoneX>
-                  {/* <Frame style={{ width: '100%', height: '100%' }} initialContent={''} mountTarget="#root">
-                    xxx
-                  </Frame> */}
+                  <Form.Item dependencies={['poster', 'stores']} noStyle>
+                    {(_form) => {
+                      const _poster = _form.getFieldValue('poster');
+                      const _stores = _form.getFieldValue('stores');
+                      return (
+                        <iframe
+                          src={
+                            process.env.MOBILE_URL +
+                            `/lps/0?&poster=${_poster}&stores=${_stores?.join(',')}`
+                          }
+                          style={{ width: '100%', height: '100%' }}
+                        />
+                      );
+                    }}
+                  </Form.Item>
                 </Device.iPhoneX>
               </div>
             </Form>
