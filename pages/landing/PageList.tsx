@@ -68,7 +68,7 @@ function Actions({ data, history, onDelete, onShowQRCode }: ActionsProps) {
       } else if (event.key == 'delete') {
         handleDelete(data);
       } else if (event.key == 'preview') {
-        onShowQRCode('https:' + process.env.MOBILE_URL + '/lps/' + data.id);
+        onShowQRCode(location.protocol + process.env.MOBILE_URL + '/lps/' + data.id);
       }
     },
     [data, handleDelete, history, onShowQRCode],
