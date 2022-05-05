@@ -303,7 +303,7 @@ function PosterList(props: PosterListProps) {
                     {
                       key: 'background',
                       title: '背景图',
-                      className: 'w-100px',
+                      width: 100,
                       render(file) {
                         return file ? (
                           <div className="d-flex w-30px justify-content-center">
@@ -320,7 +320,7 @@ function PosterList(props: PosterListProps) {
                     {
                       key: 'music',
                       title: '背景音乐',
-                      className: 'w-250px',
+                      width: '20%',
                       render(file) {
                         return (
                           <div className="d-flex list-music-preview">
@@ -333,17 +333,17 @@ function PosterList(props: PosterListProps) {
                         );
                       },
                     },
-                    {
-                      key: 'createdAt',
-                      title: '创建时间',
-                      className: 'w-150px',
-                      sorter: true,
-                      sortOrder: sorter.field == 'createdAt' ? sorter.order : undefined,
-                    },
+                    // {
+                    //   key: 'createdAt',
+                    //   title: '创建时间',
+                    //   width: 150,
+                    //   sorter: true,
+                    //   sortOrder: sorter.field == 'createdAt' ? sorter.order : undefined,
+                    // },
                     {
                       key: 'actions',
                       title: '操作',
-                      className: 'w-150px',
+                      width: 100,
                       render: (_, record) => {
                         return (
                           <Actions onDelete={handleDelete} history={props.history} data={record} />

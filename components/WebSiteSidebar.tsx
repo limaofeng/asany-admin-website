@@ -9,7 +9,7 @@ function WebSiteSidebar(props: WebSiteSidebarProps) {
   const { menu } = props;
 
   return (
-    <AsideWorkspace>
+    <AsideWorkspace width={280}>
       <div className="mt-5 p-5">
         <h1 className="text-gray-800 fw-bold mx-5">网站</h1>
       </div>

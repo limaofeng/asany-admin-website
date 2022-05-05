@@ -351,7 +351,7 @@ function PageList(props: PageListProps) {
                     {
                       key: 'poster',
                       title: '海报',
-                      className: 'w-100px',
+                      width: 80,
                       render(poster) {
                         return poster?.background ? (
                           <div className="d-flex w-30px justify-content-center">
@@ -374,17 +374,17 @@ function PageList(props: PageListProps) {
                     //     return <Badge color={status?.color as any}>{status?.label}</Badge>;
                     //   },
                     // },
-                    {
-                      key: 'createdAt',
-                      title: '创建时间',
-                      className: 'w-150px',
-                      sorter: true,
-                      sortOrder: sorter.field == 'createdAt' ? sorter.order : undefined,
-                    },
+                    // {
+                    //   key: 'createdAt',
+                    //   title: '创建时间',
+                    //   width: 150,
+                    //   sorter: true,
+                    //   sortOrder: sorter.field == 'createdAt' ? sorter.order : undefined,
+                    // },
                     {
                       key: 'actions',
                       title: '操作',
-                      className: 'w-150px',
+                      width: 100,
                       render: (_, record) => {
                         return (
                           <Actions

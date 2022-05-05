@@ -282,7 +282,7 @@ function StoreList(props: StoreListProps) {
                       title: '店号',
                       sorter: true,
                       sortOrder: sorter.field == 'code' ? sorter.order : undefined,
-                      className: 'w-80px',
+                      width: 80,
                     },
                     {
                       key: 'name',
@@ -305,7 +305,7 @@ function StoreList(props: StoreListProps) {
                     {
                       key: 'qrCode',
                       title: '二维码',
-                      className: 'w-100px',
+                      width: 60,
                       render(file) {
                         return file ? (
                           <img
@@ -317,25 +317,25 @@ function StoreList(props: StoreListProps) {
                         );
                       },
                     },
-                    {
-                      key: 'address.street',
-                      dataIndex: 'address.fullAddress',
-                      title: '门店地址',
-                      className: 'w-250px',
-                      sorter: true,
-                      sortOrder: sorter.field == 'location.street' ? sorter.order : undefined,
-                    },
-                    {
-                      key: 'createdAt',
-                      title: '创建时间',
-                      className: 'w-150px',
-                      sorter: true,
-                      sortOrder: sorter.field == 'createdAt' ? sorter.order : undefined,
-                    },
+                    // {
+                    //   key: 'address.street',
+                    //   dataIndex: 'address.fullAddress',
+                    //   title: '门店地址',
+                    //   width: 120,
+                    //   sorter: true,
+                    //   sortOrder: sorter.field == 'location.street' ? sorter.order : undefined,
+                    // },
+                    // {
+                    //   key: 'createdAt',
+                    //   title: '创建时间',
+                    //   width: 150,
+                    //   sorter: true,
+                    //   sortOrder: sorter.field == 'createdAt' ? sorter.order : undefined,
+                    // },
                     {
                       key: 'actions',
                       title: '操作',
-                      className: 'w-150px',
+                      width: 100,
                       render: (_, record) => {
                         return (
                           <Actions onDelete={handleDelete} history={props.history} data={record} />
