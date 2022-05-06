@@ -176,6 +176,11 @@ fragment LandingPageParts on LandingPage {
     name
   }
   createdAt(format: "yyyy-MM-dd HH:mm")
+  metadata {
+    thumb
+    title
+    description
+  }
 }
 
 fragment LandingPosterParts on LandingPoster {

@@ -22,7 +22,9 @@ import {
   Input,
   Modal,
   Select2,
+  Separator,
   Toast,
+  Upload,
 } from '@/metronic';
 
 type PageDetailsProps = RouteComponentProps<{ id: string }>;
@@ -119,6 +121,7 @@ function PageDetails(props: PageDetailsProps) {
       }
       form.setFieldsValue({
         ...page,
+        metadata: { ...page.metadata, thumb: page.metadata?.thumb?.id },
         poster: page.poster?.id,
         stores: page.stores?.map((it) => it.id),
       });
@@ -147,75 +150,117 @@ function PageDetails(props: PageDetailsProps) {
         </Card.Header>
         <Card.Body>
           <BlockUI zIndex={10} overlayClassName="bg-white bg-opacity-25" loading={getLoading}>
-            <Form
-              form={form}
-              className="w-800px row d-flex flex-shrink-0 flex-column-reverse flex-md-row"
-            >
-              <div className="col-12 col-md-8">
-                <Form.Item
-                  className="mb-5"
-                  name="name"
-                  label="名称"
-                  rules={[{ required: true, message: '名称不能为空' }]}
-                >
-                  <Input solid className="w-400px" />
-                </Form.Item>
-                <Form.Item className="my-5" name="poster" label="海报">
-                  <Select2 solid className="w-400px" options={posters} />
-                </Form.Item>
-                <Form.Item className="my-5" name="stores" label="参加活动的门店">
-                  <Select2 solid multiple className="w-400px" options={stores} />
-                </Form.Item>
-                <Form.Item className="my-5" name="start" label="开始时间">
-                  <DatePicker solid className="w-400px" />
-                </Form.Item>
-                <Form.Item dependencies={['start']} noStyle={true}>
-                  {() => {
-                    return (
-                      <Form.Item className="my-5" name="end" label="截止时间">
-                        <DatePicker
-                          solid
-                          minDate={form.getFieldValue('start')}
-                          className="w-400px"
-                        />
-                      </Form.Item>
-                    );
-                  }}
-                </Form.Item>
-
-                <Form.Item
-                  className="my-5"
-                  name="description"
-                  label="描述"
-                  help="请用少于250字符描述"
-                >
-                  <Input.TextArea
-                    solid
-                    autoSize={{ minRows: 4, maxRows: 8 }}
-                    showCount
-                    maxLength={250}
-                    className="w-400px"
-                  />
-                </Form.Item>
-              </div>
-              <div className="col-12 col-md-4">
-                <Device.iPhoneX>
-                  <Form.Item dependencies={['poster', 'stores']} noStyle>
-                    {(_form) => {
-                      const _poster = _form.getFieldValue('poster');
-                      const _stores = _form.getFieldValue('stores');
+            <Form form={form}>
+              <div className="mw-800px row d-flex flex-shrink-0 flex-column-reverse flex-md-row">
+                <div className="col-12 col-md-8">
+                  <Form.Item
+                    className="mb-5"
+                    name="name"
+                    label="名称"
+                    rules={[{ required: true, message: '名称不能为空' }]}
+                  >
+                    <Input solid className="w-400px" />
+                  </Form.Item>
+                  <Form.Item className="my-5" name="poster" label="海报">
+                    <Select2 solid className="w-400px" options={posters} />
+                  </Form.Item>
+                  <Form.Item className="my-5" name="stores" label="参加活动的门店">
+                    <Select2 solid multiple className="w-400px" options={stores} />
+                  </Form.Item>
+                  <Form.Item className="my-5" name="start" label="开始时间">
+                    <DatePicker solid className="w-400px" />
+                  </Form.Item>
+                  <Form.Item dependencies={['start']} noStyle={true}>
+                    {() => {
                       return (
-                        <iframe
-                          src={
-                            process.env.MOBILE_URL +
-                            `/lps/0?&poster=${_poster}&stores=${_stores?.join(',')}`
-                          }
-                          style={{ width: '100%', height: '100%' }}
-                        />
+                        <Form.Item className="my-5" name="end" label="截止时间">
+                          <DatePicker
+                            solid
+                            minDate={form.getFieldValue('start')}
+                            className="w-400px"
+                          />
+                        </Form.Item>
                       );
                     }}
                   </Form.Item>
-                </Device.iPhoneX>
+                  <Form.Item
+                    className="my-5"
+                    name="description"
+                    label="描述"
+                    help="请用少于250字符描述"
+                  >
+                    <Input.TextArea
+                      solid
+                      autoSize={{ minRows: 4, maxRows: 8 }}
+                      showCount
+                      maxLength={250}
+                      className="w-400px"
+                    />
+                  </Form.Item>
+                </div>
+                <div className="col-12 col-md-4">
+                  <Device.iPhoneX>
+                    <Form.Item dependencies={['poster', 'stores']} noStyle>
+                      {(_form) => {
+                        const _poster = _form.getFieldValue('poster');
+                        const _stores = _form.getFieldValue('stores');
+                        return (
+                          <iframe
+                            src={
+                              process.env.MOBILE_URL +
+                              `/lps/0?&poster=${_poster}&stores=${_stores?.join(',')}`
+                            }
+                            style={{ width: '100%', height: '100%' }}
+                          />
+                        );
+                      }}
+                    </Form.Item>
+                  </Device.iPhoneX>
+                </div>
+              </div>
+              <div className="row">
+                <h4 className="mt-10">HTML 页面元数据</h4>
+                <Separator className="mt-4 mb-8" />
+                <div className="mw-800px row d-flex flex-shrink-0 flex-column-reverse flex-md-row">
+                  <div className="col-12 col-md-8">
+                    <Form.Item
+                      className="my-5 w-400px"
+                      name={['metadata', 'title']}
+                      label="标题"
+                      help="可作为微信分享时,的标题"
+                    >
+                      <Input solid className="" />
+                    </Form.Item>
+                    <Form.Item
+                      className="my-5 w-400px"
+                      name={['metadata', 'description']}
+                      label="描述"
+                      help="请用少于250字符描述,可作为微信分享时的副标题"
+                    >
+                      <Input.TextArea
+                        solid
+                        autoSize={{ minRows: 4, maxRows: 8 }}
+                        showCount
+                        maxLength={250}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div className="col-12 col-md-4">
+                    <Form.Item
+                      className="mb-5"
+                      name={['metadata', 'thumb']}
+                      label="缩略图"
+                      help="可作为微信分享时的图片"
+                    >
+                      <Upload.Image
+                        width={250}
+                        height={250}
+                        space="orX8kLOV"
+                        crop={{ height: 300, zoomable: false, aspectRatio: 1 }}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
               </div>
             </Form>
           </BlockUI>
