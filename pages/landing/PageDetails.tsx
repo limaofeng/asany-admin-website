@@ -85,10 +85,10 @@ function PageDetails(props: PageDetailsProps) {
       progressBar: true,
     });
 
-    if (!!history.length) {
-      history.goBack();
-    } else {
+    if (!history.length || isNew) {
       history.replace('/website/landing/pages');
+    } else {
+      history.goBack();
     }
   }, [createPage, match.params.id, form, history, isNew, updatePage]);
 

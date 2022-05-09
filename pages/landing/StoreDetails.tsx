@@ -101,10 +101,10 @@ function StoreDetails(props: StoreDetailsProps) {
           timer: 3000,
           timerProgressBar: true,
         });
-        if (!!history.length) {
-          history.goBack();
-        } else {
+        if (!history.length || isNew) {
           history.replace('/website/landing/stores');
+        } else {
+          history.goBack();
         }
         return;
       }

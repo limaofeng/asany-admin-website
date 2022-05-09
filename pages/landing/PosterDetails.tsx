@@ -52,10 +52,10 @@ function PosterDetails(props: PosterDetailsProps) {
       progressBar: true,
     });
 
-    if (!!history.length) {
-      history.goBack();
-    } else {
+    if (!history.length || isNew) {
       history.replace('/website/landing/posters');
+    } else {
+      history.goBack();
     }
   }, [createPoster, match.params.id, form, history, isNew, updatePoster]);
 
