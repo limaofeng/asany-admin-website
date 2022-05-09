@@ -121,7 +121,7 @@ function StoreDetails(props: StoreDetailsProps) {
     return () => {
       abortController.abort();
     };
-  }, [form, loadStore, history, match.params.id]);
+  }, [form, loadStore, history, match.params.id, isNew]);
 
   const handlePasteAddress = useCallback(
     async (e: React.ClipboardEvent) => {
