@@ -56,26 +56,18 @@ function PageDetails(props: PageDetailsProps) {
   const form = Form.useForm();
 
   const handleSave = useCallback(async () => {
-    const { start, end, ...values } = await form.validateFields();
+    const values = await form.validateFields();
     if (isNew) {
       await createPage({
         variables: {
-          input: {
-            ...values,
-            start: start && start.isValid() ? start.toString() : undefined,
-            end: end && end.isValid() ? end.toString() : undefined,
-          },
+          input: values,
         },
       });
     } else {
       await updatePage({
         variables: {
           id: match.params.id,
-          input: {
-            ...values,
-            start: start && start.isValid() ? start.toString() : undefined,
-            end: end && end.isValid() ? end.toString() : undefined,
-          },
+          input: values,
         },
       });
     }
@@ -88,7 +80,7 @@ function PageDetails(props: PageDetailsProps) {
     if (!history.length || isNew) {
       history.replace('/website/landing/pages');
     } else {
-      history.goBack();
+      history.go(-2);
     }
   }, [createPage, match.params.id, form, history, isNew, updatePage]);
 
@@ -142,6 +134,13 @@ function PageDetails(props: PageDetailsProps) {
     }));
   }, [posterData]);
 
+  const handleSelectStoresAll = useCallback(() => {
+    if (!stores) {
+      return;
+    }
+    form.setFieldsValue({ stores: stores.map((node) => node.value) });
+  }, [form, stores]);
+
   return (
     <ContentWrapper header={isNew ? { title: '新增活动' } : undefined} footer={false}>
       <Card className="mb-5 mb-xl-10">
@@ -164,7 +163,18 @@ function PageDetails(props: PageDetailsProps) {
                   <Form.Item className="my-5" name="poster" label="海报">
                     <Select2 solid className="w-400px" options={posters} />
                   </Form.Item>
-                  <Form.Item className="my-5" name="stores" label="参加活动的门店">
+                  <Form.Item
+                    className="my-5"
+                    name="stores"
+                    label={
+                      <>
+                        参加活动的门店
+                        <a onClick={handleSelectStoresAll} className="ps-2 cursor-pointer">
+                          添加全部门店
+                        </a>
+                      </>
+                    }
+                  >
                     <Select2 solid multiple className="w-400px" options={stores} />
                   </Form.Item>
                   <Form.Item className="my-5" name="start" label="开始时间">

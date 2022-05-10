@@ -275,10 +275,10 @@ function PageList(props: PageListProps) {
               className="border-body bg-body w-150px me-5"
               placeholder="状态"
               options={[{ label: '全部', value: 'all' }, ...allStatus]}
-            /> */}
+            />
             <Button as={Link} variant="primary" to="/website/landing/pages/new">
               新增活动
-            </Button>
+            </Button> */}
           </div>
         </Controls>
       </div>
