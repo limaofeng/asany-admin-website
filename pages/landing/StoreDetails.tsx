@@ -11,13 +11,13 @@ import {
 
 import { ContentWrapper } from '@/layouts/components';
 import {
-  AreaPicker,
   BlockUI,
   Button,
   Card,
   Form,
   Input,
   Modal,
+  RegionPicker,
   Spin,
   Toast,
   Upload,
@@ -29,7 +29,7 @@ type StoreDetailsProps = RouteComponentProps<{ id: string }>;
 function StoreDetails(props: StoreDetailsProps) {
   const { match, history } = props;
 
-  const [, { loadAddress }] = useAreas();
+  const [, { loadRegion }] = useAreas();
 
   const [loadStore, { data: viewData, loading: getLoading }] = useLandingStoreLazyQuery({
     fetchPolicy: 'cache-and-network',
@@ -144,7 +144,7 @@ function StoreDetails(props: StoreDetailsProps) {
 
       const geocode = _data!.amapOpenAPI!.geocodes[0];
 
-      const _address = await loadAddress(geocode.adcode!);
+      const _address = await loadRegion(geocode.adcode!);
 
       const index = detailedAddress.indexOf(geocode.district!);
       if (index != -1) {
@@ -162,7 +162,7 @@ function StoreDetails(props: StoreDetailsProps) {
         form.setFieldsValue({ address: _address, detailedAddress });
       }
     },
-    [form, loadAddress, loadGeocode],
+    [form, loadRegion, loadGeocode],
   );
 
   const handleGeolocation = useCallback(async () => {
@@ -216,7 +216,7 @@ function StoreDetails(props: StoreDetailsProps) {
                   <Input solid className="w-400px" />
                 </Form.Item>
                 <Form.Item className="my-5" name="address" label="所在地区">
-                  <AreaPicker
+                  <RegionPicker
                     solid
                     resultType="object"
                     className="w-400px"
