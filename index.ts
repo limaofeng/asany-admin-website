@@ -12,38 +12,13 @@ import './style/Landing.scss';
 })
 class Website {
   @component()
-  Sidebar = dynamic({
-    loader: () => import('./components/WebSiteSidebar'),
+  WebsiteList = dynamic({
+    loader: () => import('./pages/WebsiteList'),
     loading: LoadingComponent,
   });
-  @component({ name: 'landing.PageList' })
-  PageList = dynamic({
-    loader: () => import('./pages/landing/PageList'),
-    loading: LoadingComponent,
-  });
-  @component({ name: 'landing.PageDetails' })
-  PageDetails = dynamic({
-    loader: () => import('./pages/landing/PageDetails'),
-    loading: LoadingComponent,
-  });
-  @component({ name: 'landing.PosterList' })
-  PosterList = dynamic({
-    loader: () => import('./pages/landing/PosterList'),
-    loading: LoadingComponent,
-  });
-  @component({ name: 'landing.PosterDetails' })
-  PosterDetails = dynamic({
-    loader: () => import('./pages/landing/PosterDetails'),
-    loading: LoadingComponent,
-  });
-  @component({ name: 'landing.StoreList' })
-  StoreList = dynamic({
-    loader: () => import('./pages/landing/StoreList'),
-    loading: LoadingComponent,
-  });
-  @component({ name: 'landing.StoreDetails' })
-  StoreDetails = dynamic({
-    loader: () => import('./pages/landing/StoreDetails'),
+  @component()
+  WebsiteManage = dynamic({
+    loader: () => import('./pages/WebsiteManage'),
     loading: LoadingComponent,
   });
 }

@@ -1,11 +1,13 @@
-.list-music-preview {
-  padding-right: 8px;
-  overflow: hidden;
-
-  .file-name-container {
-    width: calc(100% - 22px);
-    .file-title {
-      text-overflow: clip;
-    }
+.contacts-sidebar {
+  .nav-tabs {
+    padding-right: 1.25rem;
+    padding-left: 1.25rem;
+  }
+}
+.main-contacts {
+  --met-aside-width: 380px;
+  .aside-workspace {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
   }
 }

@@ -1,0 +1,39 @@
+query websites {
+  websites {
+    id
+    name
+  }
+}
+
+query website($id: ID!) {
+  website(id: $id) {
+    id
+    name
+    channel {
+      id
+    }
+  }
+}
+
+mutation createWebsite($input: WebsiteCreateInput!) {
+  createWebsite(input: $input) {
+    id
+    name
+  }
+}
+
+query websiteArticleChannelAll($id: ID!) {
+  channels: articleChannels(filter: { parent: { id: $id, subColumns: true } }) {
+    id
+    icon
+    name
+    fullName
+    path
+    index
+    level
+    cover
+    parent {
+      id
+    }
+  }
+}
