@@ -8,9 +8,7 @@ import qs from 'qs';
 import { Icon } from '@asany/icons';
 import classnames from 'classnames';
 
-import {
-  useWebsitesQuery,
-} from '../hooks';
+import { useWebsitesQuery } from '../hooks';
 
 import Controls from '@/components/Controls';
 import { ContentWrapper } from '@/layouts/components';
@@ -193,7 +191,7 @@ function WebsiteList(props: WebsiteListProps) {
     [history, location.pathname],
   );
 
-/*   const handleChange = useCallback(
+  /*   const handleChange = useCallback(
     (_pagination, _filters, _sorter) => {
       const _query: any = {};
       if (variables.filter?.name_contains) {
@@ -210,12 +208,12 @@ function WebsiteList(props: WebsiteListProps) {
 
   const handleDelete = useCallback(async (...ids: string[]) => {
     console.log(ids);
-  //   const { data: dresult } = await deletePage({
-  //     variables: {
-  //       ids,
-  //     },
-  //   });
-  //   return dresult?.deleteLandingPage || 0;
+    //   const { data: dresult } = await deletePage({
+    //     variables: {
+    //       ids,
+    //     },
+    //   });
+    //   return dresult?.deleteLandingPage || 0;
   }, []);
 
   const handleDeleteInBatch = useCallback(

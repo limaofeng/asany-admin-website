@@ -1,4 +1,3 @@
-
 import type { RouteComponentProps } from 'react-router';
 // import Frame from 'react-frame-component';
 
@@ -66,39 +65,39 @@ function PageDetails(props: PageDetailsProps) {
   //   if (match.params.id == 'new') {
   //     return;
   //   }
-    // const abortController = new AbortController();
-    // loadPage({
-    //   variables: { id: match.params.id },
-    //   context: {
-    //     fetchOptions: {
-    //       signal: abortController.signal,
-    //     },
-    //   },
-    // }).then(async ({ data }) => {
-    //   const page = data?.page;
-    //   if (!page) {
-    //     await Modal.error({
-    //       content: '活动不存在,可能已经被删除了',
-    //       timer: 3000,
-    //       timerProgressBar: true,
-    //     });
-    //     if (!!history.length) {
-    //       history.goBack();
-    //     } else {
-    //       history.replace('/website/landing/pages');
-    //     }
-    //     return;
-    //   }
-    //   form.setFieldsValue({
-    //     ...page,
-    //     metadata: { ...page.metadata, thumb: page.metadata?.thumb?.id },
-    //     poster: page.poster?.id,
-    //     stores: page.stores?.map((it) => it.id),
-    //   });
-    // });
-    // return () => {
-    //   abortController.abort();
-    // };
+  // const abortController = new AbortController();
+  // loadPage({
+  //   variables: { id: match.params.id },
+  //   context: {
+  //     fetchOptions: {
+  //       signal: abortController.signal,
+  //     },
+  //   },
+  // }).then(async ({ data }) => {
+  //   const page = data?.page;
+  //   if (!page) {
+  //     await Modal.error({
+  //       content: '活动不存在,可能已经被删除了',
+  //       timer: 3000,
+  //       timerProgressBar: true,
+  //     });
+  //     if (!!history.length) {
+  //       history.goBack();
+  //     } else {
+  //       history.replace('/website/landing/pages');
+  //     }
+  //     return;
+  //   }
+  //   form.setFieldsValue({
+  //     ...page,
+  //     metadata: { ...page.metadata, thumb: page.metadata?.thumb?.id },
+  //     poster: page.poster?.id,
+  //     stores: page.stores?.map((it) => it.id),
+  //   });
+  // });
+  // return () => {
+  //   abortController.abort();
+  // };
   // }, [form, history, match.params.id]);
 
   /*   const stores = useMemo(() => {
@@ -112,7 +111,7 @@ function PageDetails(props: PageDetailsProps) {
     }));
   }, []); */
 
-/*   const handleSelectStoresAll = useCallback(() => {
+  /*   const handleSelectStoresAll = useCallback(() => {
     // form.setFieldsValue({ stores: stores.map((node) => node.value) });
   }, [form]); */
 
