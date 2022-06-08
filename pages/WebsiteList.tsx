@@ -6,12 +6,9 @@ import type { History } from 'history';
 import type { RouteComponentProps } from 'react-router';
 import qs from 'qs';
 import { Icon } from '@asany/icons';
+import classnames from 'classnames';
 
 import {
-  LandingPagesDocument,
-  useDeletePageMutation,
-  useLandingPagesQuery,
-  useWebsitesLazyQuery,
   useWebsitesQuery,
 } from '../hooks';
 
@@ -37,13 +34,12 @@ import {
 } from '@/metronic';
 import type { LandingPage, LandingStore } from '@/types';
 import type { Sorter } from '@/metronic/typings';
-import classnames from 'classnames';
 
 type ActionsProps = {
   history: History;
   data: LandingPage;
   onShowQRCode: (url: string) => void;
-  onDelete: (...ids: string[]) => Promise<number>;
+  onDelete: (...ids: string[]) => Promise<void>;
 };
 
 function Actions({ data, history, onDelete, onShowQRCode }: ActionsProps) {
@@ -197,7 +193,7 @@ function WebsiteList(props: WebsiteListProps) {
     [history, location.pathname],
   );
 
-  const handleChange = useCallback(
+/*   const handleChange = useCallback(
     (_pagination, _filters, _sorter) => {
       const _query: any = {};
       if (variables.filter?.name_contains) {
@@ -210,15 +206,16 @@ function WebsiteList(props: WebsiteListProps) {
       history.replace(location.pathname + '?' + qs.stringify(_query));
     },
     [history, location.pathname, variables.filter?.name_contains],
-  );
+  ); */
 
   const handleDelete = useCallback(async (...ids: string[]) => {
-    const { data: dresult } = await deletePage({
-      variables: {
-        ids,
-      },
-    });
-    return dresult?.deleteLandingPage || 0;
+    console.log(ids);
+  //   const { data: dresult } = await deletePage({
+  //     variables: {
+  //       ids,
+  //     },
+  //   });
+  //   return dresult?.deleteLandingPage || 0;
   }, []);
 
   const handleDeleteInBatch = useCallback(

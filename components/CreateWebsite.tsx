@@ -31,11 +31,11 @@ function CreateWebsite() {
               {/*--begin::Step 1--*/}
               <div className="stepper-item current" data-kt-stepper-element="nav">
                 {/*--begin::Line--*/}
-                <div className="stepper-line w-40px"></div>
+                <div className="stepper-line w-40px" />
                 {/*--end::Line--*/}
                 {/*--begin::Icon--*/}
                 <div className="stepper-icon w-40px h-40px">
-                  <i className="stepper-check fas fa-check"></i>
+                  <i className="stepper-check fas fa-check" />
                   <span className="stepper-number">1</span>
                 </div>
                 {/*--end::Icon--*/}
@@ -50,11 +50,11 @@ function CreateWebsite() {
               {/*--begin::Step 2--*/}
               <div className="stepper-item" data-kt-stepper-element="nav">
                 {/*--begin::Line--*/}
-                <div className="stepper-line w-40px"></div>
+                <div className="stepper-line w-40px" />
                 {/*--end::Line--*/}
                 {/*--begin::Icon--*/}
                 <div className="stepper-icon w-40px h-40px">
-                  <i className="stepper-check fas fa-check"></i>
+                  <i className="stepper-check fas fa-check" />
                   <span className="stepper-number">2</span>
                 </div>
                 {/*--begin::Icon--*/}
@@ -69,11 +69,11 @@ function CreateWebsite() {
               {/*--begin::Step 3--*/}
               <div className="stepper-item" data-kt-stepper-element="nav">
                 {/*--begin::Line--*/}
-                <div className="stepper-line w-40px"></div>
+                <div className="stepper-line w-40px" />
                 {/*--end::Line--*/}
                 {/*--begin::Icon--*/}
                 <div className="stepper-icon w-40px h-40px">
-                  <i className="stepper-check fas fa-check"></i>
+                  <i className="stepper-check fas fa-check" />
                   <span className="stepper-number">3</span>
                 </div>
                 {/*--end::Icon--*/}
@@ -88,11 +88,11 @@ function CreateWebsite() {
               {/*--begin::Step 4--*/}
               <div className="stepper-item" data-kt-stepper-element="nav">
                 {/*--begin::Line--*/}
-                <div className="stepper-line w-40px"></div>
+                <div className="stepper-line w-40px" />
                 {/*--end::Line--*/}
                 {/*--begin::Icon--*/}
                 <div className="stepper-icon w-40px h-40px">
-                  <i className="stepper-check fas fa-check"></i>
+                  <i className="stepper-check fas fa-check" />
                   <span className="stepper-number">4</span>
                 </div>
                 {/*--end::Icon--*/}
@@ -107,11 +107,11 @@ function CreateWebsite() {
               {/*--begin::Step 5--*/}
               <div className="stepper-item" data-kt-stepper-element="nav">
                 {/*--begin::Line--*/}
-                <div className="stepper-line w-40px"></div>
+                <div className="stepper-line w-40px" />
                 {/*--end::Line--*/}
                 {/*--begin::Icon--*/}
                 <div className="stepper-icon w-40px h-40px">
-                  <i className="stepper-check fas fa-check"></i>
+                  <i className="stepper-check fas fa-check" />
                   <span className="stepper-number">5</span>
                 </div>
                 {/*--end::Icon--*/}
@@ -139,7 +139,7 @@ function CreateWebsite() {
                     {/*--begin::Label--*/}
                     <label className="d-flex align-items-center fs-5 fw-bold mb-2">
                       <span className="required">App Name</span>
-                      <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify your unique app name"></i>
+                      <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify your unique app name" />
                     </label>
                     {/*--end::Label--*/}
                     {/*--begin::Input--*/}
@@ -152,7 +152,7 @@ function CreateWebsite() {
                     {/*--begin::Label--*/}
                     <label className="d-flex align-items-center fs-5 fw-bold mb-4">
                       <span className="required">Category</span>
-                      <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Select your app category"></i>
+                      <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Select your app category" />
                     </label>
                     {/*--end::Label--*/}
                     {/*--begin:Options--*/}
@@ -273,7 +273,7 @@ function CreateWebsite() {
                     {/*--begin::Label--*/}
                     <label className="d-flex align-items-center fs-5 fw-bold mb-4">
                       <span className="required">Select Framework</span>
-                      <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify your apps framework"></i>
+                      <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify your apps framework" />
                     </label>
                     {/*--end::Label--*/}
                     {/*--begin:Option--*/}
@@ -283,7 +283,7 @@ function CreateWebsite() {
                         {/*--begin:Icon--*/}
                         <span className="symbol symbol-50px me-6">
                           <span className="symbol-label bg-light-warning">
-                            <i className="fab fa-html5 text-warning fs-2x"></i>
+                            <i className="fab fa-html5 text-warning fs-2x" />
                           </span>
                         </span>
                         {/*--end:Icon--*/}
@@ -309,7 +309,7 @@ function CreateWebsite() {
                         {/*--begin:Icon--*/}
                         <span className="symbol symbol-50px me-6">
                           <span className="symbol-label bg-light-success">
-                            <i className="fab fa-react text-success fs-2x"></i>
+                            <i className="fab fa-react text-success fs-2x" />
                           </span>
                         </span>
                         {/*--end:Icon--*/}
@@ -335,7 +335,7 @@ function CreateWebsite() {
                         {/*--begin:Icon--*/}
                         <span className="symbol symbol-50px me-6">
                           <span className="symbol-label bg-light-danger">
-                            <i className="fab fa-angular text-danger fs-2x"></i>
+                            <i className="fab fa-angular text-danger fs-2x" />
                           </span>
                         </span>
                         {/*--end:Icon--*/}
@@ -361,7 +361,7 @@ function CreateWebsite() {
                         {/*--begin:Icon--*/}
                         <span className="symbol symbol-50px me-6">
                           <span className="symbol-label bg-light-primary">
-                            <i className="fab fa-vuejs text-primary fs-2x"></i>
+                            <i className="fab fa-vuejs text-primary fs-2x" />
                           </span>
                         </span>
                         {/*--end:Icon--*/}
@@ -403,7 +403,7 @@ function CreateWebsite() {
                     {/*--begin::Label--*/}
                     <label className="d-flex align-items-center fs-5 fw-bold mb-4">
                       <span className="required">Select Database Engine</span>
-                      <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Select your app database engine"></i>
+                      <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Select your app database engine" />
                     </label>
                     {/*--end::Label--*/}
                     {/*--begin:Option--*/}
@@ -413,7 +413,7 @@ function CreateWebsite() {
                         {/*--begin::Icon--*/}
                         <span className="symbol symbol-50px me-6">
                           <span className="symbol-label bg-light-success">
-                            <i className="fas fa-database text-success fs-2x"></i>
+                            <i className="fas fa-database text-success fs-2x" />
                           </span>
                         </span>
                         {/*--end::Icon--*/}
@@ -439,7 +439,7 @@ function CreateWebsite() {
                         {/*--begin::Icon--*/}
                         <span className="symbol symbol-50px me-6">
                           <span className="symbol-label bg-light-danger">
-                            <i className="fab fa-google text-danger fs-2x"></i>
+                            <i className="fab fa-google text-danger fs-2x" />
                           </span>
                         </span>
                         {/*--end::Icon--*/}
@@ -465,7 +465,7 @@ function CreateWebsite() {
                         {/*--begin::Icon--*/}
                         <span className="symbol symbol-50px me-6">
                           <span className="symbol-label bg-light-warning">
-                            <i className="fab fa-amazon text-warning fs-2x"></i>
+                            <i className="fab fa-amazon text-warning fs-2x" />
                           </span>
                         </span>
                         {/*--end::Icon--*/}
@@ -497,7 +497,7 @@ function CreateWebsite() {
                     {/*--begin::Label--*/}
                     <label className="d-flex align-items-center fs-6 fw-bold form-label mb-2">
                       <span className="required">Name On Card</span>
-                      <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a card holder's name"></i>
+                      <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a card holder's name" />
                     </label>
                     {/*--end::Label--*/}
                     <input type="text" className="form-control form-control-solid" placeholder="" name="card_name" value="Max Doe" />
@@ -536,7 +536,7 @@ function CreateWebsite() {
                         {/*--begin::Col--*/}
                         <div className="col-6">
                           <select name="card_expiry_month" className="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Month">
-                            <option></option>
+                            <option />
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -555,7 +555,7 @@ function CreateWebsite() {
                         {/*--begin::Col--*/}
                         <div className="col-6">
                           <select name="card_expiry_year" className="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Year">
-                            <option></option>
+                            <option />
                             <option value="2022">2022</option>
                             <option value="2023">2023</option>
                             <option value="2024">2024</option>
@@ -579,7 +579,7 @@ function CreateWebsite() {
                       {/*--begin::Label--*/}
                       <label className="d-flex align-items-center fs-6 fw-bold form-label mb-2">
                         <span className="required">CVV</span>
-                        <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Enter a card CVV code"></i>
+                        <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Enter a card CVV code" />
                       </label>
                       {/*--end::Label--*/}
                       {/*--begin::Input wrapper--*/}
@@ -669,7 +669,7 @@ function CreateWebsite() {
                     </span>
                     {/*--end::Svg Icon--*/}</span>
                     <span className="indicator-progress">Please wait...
-                    <span className="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                    <span className="spinner-border spinner-border-sm align-middle ms-2" /></span>
                   </button>
                   <button type="button" className="btn btn-lg btn-primary" data-kt-stepper-action="next">Continue
                   {/*--begin::Svg Icon | path: icons/duotune/arrows/arr064.svg--*/}

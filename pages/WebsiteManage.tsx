@@ -1,25 +1,9 @@
-import { useCallback, useEffect, useMemo } from 'react';
 
 import type { RouteComponentProps } from 'react-router';
 // import Frame from 'react-frame-component';
 
 import WebsiteSidebar from '../components/WebsiteSidebar';
 
-import { useWebsiteQuery } from '../hooks';
-import { ContentWrapper } from '@/layouts/components';
-import {
-  BlockUI,
-  Button,
-  Card,
-  DatePicker,
-  Device,
-  Form,
-  Input,
-  Select2,
-  Separator,
-  Toast,
-  Upload,
-} from '@/metronic';
 import { MicroApp } from '@/layouts/Demo7';
 
 type PageDetailsProps = RouteComponentProps<{ id: string }> & {
@@ -27,7 +11,7 @@ type PageDetailsProps = RouteComponentProps<{ id: string }> & {
 };
 
 function PageDetails(props: PageDetailsProps) {
-  const { match, history, children, location } = props;
+  const { match, children, location } = props;
   /*
   const { data: storeData } = useLandingStoresQuery({
     fetchPolicy: 'cache-and-network',
@@ -45,43 +29,43 @@ function PageDetails(props: PageDetailsProps) {
   const [createPage, { loading: createSubmiting }] = useCreatePageMutation({});
   const [updatePage, { loading: updateSubmiting }] = useUpdatePageMutation({}); */
 
-  const isNew = match.params.id == 'new';
+  // const isNew = match.params.id == 'new';
 
-  const form = Form.useForm();
+  // const form = Form.useForm();
 
-  const handleSave = useCallback(async () => {
-    const values = await form.validateFields();
-    if (isNew) {
-      await createPage({
-        variables: {
-          input: values,
-        },
-      });
-    } else {
-      await updatePage({
-        variables: {
-          id: match.params.id,
-          input: values,
-        },
-      });
-    }
+  // const handleSave = useCallback(async () => {
+  //   const values = await form.validateFields();
+  //   if (isNew) {
+  //     await createPage({
+  //       variables: {
+  //         input: values,
+  //       },
+  //     });
+  //   } else {
+  //     await updatePage({
+  //       variables: {
+  //         id: match.params.id,
+  //         input: values,
+  //       },
+  //     });
+  //   }
 
-    Toast.success(`活动 “${values.name}” ${isNew ? '新增' : '修改'}成功`, 2000, {
-      placement: 'bottom-start',
-      progressBar: true,
-    });
+  //   Toast.success(`活动 “${values.name}” ${isNew ? '新增' : '修改'}成功`, 2000, {
+  //     placement: 'bottom-start',
+  //     progressBar: true,
+  //   });
 
-    if (!history.length || isNew) {
-      history.replace('/website/landing/pages');
-    } else {
-      history.go(-2);
-    }
-  }, [match.params.id, form, history, isNew]);
+  //   if (!history.length || isNew) {
+  //     history.replace('/website/landing/pages');
+  //   } else {
+  //     history.go(-2);
+  //   }
+  // }, [match.params.id, form, history, isNew]);
 
-  useEffect(() => {
-    if (match.params.id == 'new') {
-      return;
-    }
+  // useEffect(() => {
+  //   if (match.params.id == 'new') {
+  //     return;
+  //   }
     // const abortController = new AbortController();
     // loadPage({
     //   variables: { id: match.params.id },
@@ -115,7 +99,7 @@ function PageDetails(props: PageDetailsProps) {
     // return () => {
     //   abortController.abort();
     // };
-  }, [form, history, match.params.id]);
+  // }, [form, history, match.params.id]);
 
   /*   const stores = useMemo(() => {
     return storeData?.landingStores.edges.map(({ node }) => ({ value: node.id, label: node.name }));
@@ -128,9 +112,9 @@ function PageDetails(props: PageDetailsProps) {
     }));
   }, []); */
 
-  const handleSelectStoresAll = useCallback(() => {
+/*   const handleSelectStoresAll = useCallback(() => {
     // form.setFieldsValue({ stores: stores.map((node) => node.value) });
-  }, [form]);
+  }, [form]); */
 
   return (
     <MicroApp>
