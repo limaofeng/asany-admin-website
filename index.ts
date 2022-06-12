@@ -3,7 +3,7 @@ import { dynamic } from 'umi';
 
 import LoadingComponent from '@/components/PageLoading';
 
-import './style/Landing.scss';
+import './style/website.scss';
 
 @library({
   name: 'website',

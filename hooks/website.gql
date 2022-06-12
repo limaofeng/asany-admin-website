@@ -24,8 +24,8 @@ mutation createWebsite($input: WebsiteCreateInput!) {
   }
 }
 
-query websiteArticleChannelAll($id: ID!) {
-  channels: articleChannels(filter: { parent: { id: $id, subColumns: true } }) {
+query websiteArticleCategories($id: ID!) {
+  categories: articleCategories(filter: { parent: { id: $id, subColumns: true } }) {
     id
     icon
     name
@@ -33,7 +33,7 @@ query websiteArticleChannelAll($id: ID!) {
     path
     index
     level
-    cover
+    image
     parent {
       id
     }
