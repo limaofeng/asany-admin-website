@@ -1,12 +1,12 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { QRCodeCanvas } from 'qrcode.react';
-import { Link } from 'umi';
-import type { History } from 'history';
-import type { RouteComponentProps } from 'react-router';
-import qs from 'qs';
 import { Icon } from '@asany/icons';
 import classnames from 'classnames';
+import type { History } from 'history';
+import { QRCodeCanvas } from 'qrcode.react';
+import qs from 'qs';
+import type { RouteComponentProps } from 'react-router';
+import { Link } from 'umi';
 
 import { useWebsitesQuery } from '../hooks';
 
@@ -30,8 +30,8 @@ import {
   Toast,
   Tooltip,
 } from '@/metronic';
-import type { LandingPage, LandingStore } from '@/types';
 import type { Sorter } from '@/metronic/typings';
+import type { LandingPage, LandingStore } from '@/types';
 
 type ActionsProps = {
   history: History;
