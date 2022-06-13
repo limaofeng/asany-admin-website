@@ -34,6 +34,9 @@ query websiteArticleCategories($id: ID!) {
     index
     level
     image
+    storeTemplate {
+      id
+    }
     parent {
       id
     }

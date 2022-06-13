@@ -27,7 +27,7 @@ function WebsiteManage(props: WebsiteManageProps) {
   const website = data?.website;
   const rootChannelId = website?.channel.id;
 
-  const [loadCategories, { data: channeslData = { categories: [] }, loading: channelsLoading }] =
+  const [loadCategories, { data: channeslData = { categories: [] }, loading: categoriesLoading }] =
     useWebsiteArticleCategoriesLazyQuery({
       fetchPolicy: 'cache-and-network',
     });
@@ -54,10 +54,10 @@ function WebsiteManage(props: WebsiteManageProps) {
           categories={categories}
           location={location}
           id={match.params.id}
-          loading={loading || channelsLoading}
+          loading={loading || categoriesLoading}
         />
       </MicroApp.Sidebar>
-      {React.Children.map(children, (o: any) => {
+      {rootChannelId && !categoriesLoading && React.Children.map(children, (o: any) => {
         o.props.location.state = {
           rootCategoryId: rootChannelId,
           categories,
