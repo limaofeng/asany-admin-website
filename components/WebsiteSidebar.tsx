@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Icon } from '@asany/icons';
-import type * as H from 'history';
 import { matchPath, useHistory } from 'react-router';
 import { Link } from 'umi';
 
@@ -66,7 +65,7 @@ type WebsiteSidebarProps = {
   id: string;
   website?: Website;
   loading: boolean;
-  location: H.Location<any>;
+  location: Location;
   categories: ArticleCategory[];
 };
 
@@ -134,8 +133,6 @@ function WebsiteSidebar(props: WebsiteSidebarProps) {
     setOpenKeys(categories.map((item) => `category_${item.id}`));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories.map((item) => item.id).join(',')]);
-
-  console.log('website', website, loading);
 
   return (
     <BlockUI

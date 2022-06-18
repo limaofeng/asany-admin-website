@@ -57,14 +57,16 @@ function WebsiteManage(props: WebsiteManageProps) {
           loading={loading || categoriesLoading}
         />
       </MicroApp.Sidebar>
-      {rootChannelId && !categoriesLoading && React.Children.map(children, (o: any) => {
-        o.props.location.state = {
-          rootCategoryId: rootChannelId,
-          categories,
-          baseUrl: '/websites/' + id,
-        };
-        return o;
-      })}
+      {rootChannelId &&
+        !categoriesLoading &&
+        React.Children.map(children, (o: any) => {
+          o.props.location.state = {
+            rootCategoryId: rootChannelId,
+            categories,
+            baseUrl: '/websites/' + id,
+          };
+          return o;
+        })}
     </MicroApp>
   );
 }

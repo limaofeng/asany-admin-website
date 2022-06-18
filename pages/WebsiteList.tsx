@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 
 import { Icon } from '@asany/icons';
-import classnames from 'classnames';
 import type { History } from 'history';
 import { QRCodeCanvas } from 'qrcode.react';
 import qs from 'qs';
@@ -14,7 +13,6 @@ import Controls from '@/components/Controls';
 import { ContentWrapper } from '@/layouts/components';
 import {
   Badge,
-  BlockUI,
   Button,
   Card,
   Col,
@@ -257,7 +255,7 @@ function WebsiteList(props: WebsiteListProps) {
   console.log('layout', layout);
 
   return (
-    <ContentWrapper header={{}} footer={false}>
+    <ContentWrapper header={{}} loading={loading} footer={false}>
       <div className="d-flex flex-wrap flex-stack pb-7">
         <div className="d-flex flex-wrap align-items-center">
           <Input.Search
@@ -294,183 +292,177 @@ function WebsiteList(props: WebsiteListProps) {
         </Card>
       ) : (
         <>
-          <BlockUI
-            className={classnames({ 'min-h-550px': true })}
-            overlayClassName="bg-white bg-opacity-25"
-            loading={loading}
-          >
-            {layout == 'card' ? (
-              <Row gutter={{ default: 6, xl: 9 }}>
-                {websites.map((item) => (
-                  <Col key={item.id} md={6} xl={4}>
-                    {/*----begin::Card--*/}
-                    <Card as="a" to={`/websites/${item.id}`} className="border-hover-primary">
-                      <Card.Header border={false} className="pt-9">
-                        <Card.Title className="m-0">
-                          <Symbol.Avatar
-                            size={50}
-                            labelClassName="fs-2"
-                            className="bg-light"
-                            src="/assets/media/svg/brand-logos/plurk.svg"
-                            gap={3}
-                          />
-                        </Card.Title>
-                        <Card.Toolbar>
-                          <Badge lightStyle="primary" className="fw-bolder me-auto px-4 py-3">
-                            In Progress
-                          </Badge>
-                        </Card.Toolbar>
-                      </Card.Header>
-                      <Card.Body className="p-9">
-                        <div className="fs-3 fw-bolder text-dark">{item.name}</div>
-                        <p className="text-gray-400 fw-bold fs-5 mt-1 mb-7">{item.description}</p>
-                        <div className="d-flex flex-wrap mb-5">
-                          <div className="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                            <div className="fs-6 text-gray-800 fw-bolder">Sep 22, 2021</div>
-                            <div className="fw-bold text-gray-400">Due Date</div>
-                          </div>
-                          <div className="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
-                            <div className="fs-6 text-gray-800 fw-bolder">$284,900.00</div>
-                            <div className="fw-bold text-gray-400">Budget</div>
-                          </div>
+          {layout == 'card' ? (
+            <Row gutter={{ default: 6, xl: 9 }}>
+              {websites.map((item) => (
+                <Col key={item.id} md={6} xl={4}>
+                  {/*----begin::Card--*/}
+                  <Card as="a" to={`/websites/${item.id}`} className="border-hover-primary">
+                    <Card.Header border={false} className="pt-9">
+                      <Card.Title className="m-0">
+                        <Symbol.Avatar
+                          size={50}
+                          labelClassName="fs-2"
+                          className="bg-light"
+                          src="/assets/media/svg/brand-logos/plurk.svg"
+                          gap={3}
+                        />
+                      </Card.Title>
+                      <Card.Toolbar>
+                        <Badge lightStyle="primary" className="fw-bolder me-auto px-4 py-3">
+                          In Progress
+                        </Badge>
+                      </Card.Toolbar>
+                    </Card.Header>
+                    <Card.Body className="p-9">
+                      <div className="fs-3 fw-bolder text-dark">{item.name}</div>
+                      <p className="text-gray-400 fw-bold fs-5 mt-1 mb-7">{item.description}</p>
+                      <div className="d-flex flex-wrap mb-5">
+                        <div className="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
+                          <div className="fs-6 text-gray-800 fw-bolder">Sep 22, 2021</div>
+                          <div className="fw-bold text-gray-400">Due Date</div>
                         </div>
-                        <Tooltip title="This project 50% completed">
-                          <div className="h-4px w-100 bg-light mb-5">
-                            <Progress percent={50} />
+                        <div className="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
+                          <div className="fs-6 text-gray-800 fw-bolder">$284,900.00</div>
+                          <div className="fw-bold text-gray-400">Budget</div>
+                        </div>
+                      </div>
+                      <Tooltip title="This project 50% completed">
+                        <div className="h-4px w-100 bg-light mb-5">
+                          <Progress percent={50} />
+                        </div>
+                      </Tooltip>
+                      <Symbol.Group maxCount={5}>
+                        <Symbol.Avatar
+                          labelClassName="fs-2"
+                          size={35}
+                          shape="circle"
+                          src="/assets/media/avatars/150-1.jpg"
+                        />
+                        <Symbol.Avatar
+                          labelClassName="fs-2"
+                          size={35}
+                          shape="circle"
+                          src="/assets/media/avatars/150-2.jpg"
+                        />
+                        <Symbol.Avatar
+                          labelClassName="fs-2"
+                          size={35}
+                          shape="circle"
+                          alt="Susan Redwood"
+                        />
+                      </Symbol.Group>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          ) : (
+            <Card className="mb-5 mb-xl-10">
+              <Card.Body>
+                <Table
+                  hover
+                  rowKey="id"
+                  noRowsRenderer={() => (
+                    <Empty
+                      description="列表数据为空"
+                      image="/assets/media/illustrations/sigma-1/5.png"
+                    />
+                  )}
+                  rowSelection={{
+                    type: 'checkbox',
+                    renderTitle: (size) => (
+                      <>
+                        已选中<span className="mx-2">{size}</span>个活动
+                      </>
+                    ),
+                    toolbar: tableToolbar,
+                  }}
+                  columns={[
+                    {
+                      key: 'name',
+                      title: '名称',
+                      sorter: true,
+                      sortOrder: sorter.field == 'name' ? sorter.order : undefined,
+                      render(name, record) {
+                        return (
+                          <div className="ps-2">
+                            <Link
+                              className="text-gray-700"
+                              to={`/website/landing/pages/${record.id}`}
+                            >
+                              {name}
+                            </Link>
                           </div>
-                        </Tooltip>
-                        <Symbol.Group maxCount={5}>
-                          <Symbol.Avatar
-                            labelClassName="fs-2"
-                            size={35}
-                            shape="circle"
-                            src="/assets/media/avatars/150-1.jpg"
-                          />
-                          <Symbol.Avatar
-                            labelClassName="fs-2"
-                            size={35}
-                            shape="circle"
-                            src="/assets/media/avatars/150-2.jpg"
-                          />
-                          <Symbol.Avatar
-                            labelClassName="fs-2"
-                            size={35}
-                            shape="circle"
-                            alt="Susan Redwood"
-                          />
-                        </Symbol.Group>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            ) : (
-              <Card className="mb-5 mb-xl-10">
-                <Card.Body>
-                  <Table
-                    hover
-                    rowKey="id"
-                    noRowsRenderer={() => (
-                      <Empty
-                        description="列表数据为空"
-                        image="/assets/media/illustrations/sigma-1/5.png"
-                      />
-                    )}
-                    rowSelection={{
-                      type: 'checkbox',
-                      renderTitle: (size) => (
-                        <>
-                          已选中<span className="mx-2">{size}</span>个活动
-                        </>
+                        );
+                      },
+                    },
+                    {
+                      key: 'stores',
+                      title: '门店',
+                      render: (stores) => (
+                        <div className="d-flex tw-truncate overflow-hidden pe-2">
+                          <span className="tw-text-ellipsis tw-truncate overflow-hidden">
+                            {stores.map((store: LandingStore) => store.name).join(',')}
+                          </span>
+                          <span>共 {stores.length} 家门店</span>
+                        </div>
                       ),
-                      toolbar: tableToolbar,
-                    }}
-                    columns={[
-                      {
-                        key: 'name',
-                        title: '名称',
-                        sorter: true,
-                        sortOrder: sorter.field == 'name' ? sorter.order : undefined,
-                        render(name, record) {
-                          return (
-                            <div className="ps-2">
-                              <Link
-                                className="text-gray-700"
-                                to={`/website/landing/pages/${record.id}`}
-                              >
-                                {name}
-                              </Link>
-                            </div>
-                          );
-                        },
-                      },
-                      {
-                        key: 'stores',
-                        title: '门店',
-                        render: (stores) => (
-                          <div className="d-flex tw-truncate overflow-hidden pe-2">
-                            <span className="tw-text-ellipsis tw-truncate overflow-hidden">
-                              {stores.map((store: LandingStore) => store.name).join(',')}
-                            </span>
-                            <span>共 {stores.length} 家门店</span>
-                          </div>
-                        ),
-                      },
-                      {
-                        key: 'poster',
-                        title: '海报',
-                        width: 80,
-                        render(poster) {
-                          return poster?.background ? (
-                            <div className="d-flex w-30px justify-content-center">
-                              <img
-                                src={process.env.STORAGE_URL + `/preview/${poster.background.id}`}
-                                className="h-30px w-20px"
-                              />
-                            </div>
-                          ) : (
-                            <Icon className="svg-icon-2qx text-muted" name="Bootstrap/file-image" />
-                          );
-                        },
-                      },
-                      // {
-                      //   key: 'status',
-                      //   title: '状态',
-                      //   className: 'w-100px',
-                      //   render(value) {
-                      //     const status = allStatus.find((it) => it.value == value);
-                      //     return <Badge color={status?.color as any}>{status?.label}</Badge>;
-                      //   },
-                      // },
-                      // {
-                      //   key: 'createdAt',
-                      //   title: '创建时间',
-                      //   width: 150,
-                      //   sorter: true,
-                      //   sortOrder: sorter.field == 'createdAt' ? sorter.order : undefined,
-                      // },
-                      {
-                        key: 'actions',
-                        title: '操作',
-                        width: 100,
-                        render: (_, record) => {
-                          return (
-                            <Actions
-                              onDelete={handleDelete}
-                              onShowQRCode={handleOpenQRCode}
-                              history={props.history}
-                              data={record as any}
+                    },
+                    {
+                      key: 'poster',
+                      title: '海报',
+                      width: 80,
+                      render(poster) {
+                        return poster?.background ? (
+                          <div className="d-flex w-30px justify-content-center">
+                            <img
+                              src={process.env.STORAGE_URL + `/preview/${poster.background.id}`}
+                              className="h-30px w-20px"
                             />
-                          );
-                        },
+                          </div>
+                        ) : (
+                          <Icon className="svg-icon-2qx text-muted" name="Bootstrap/file-image" />
+                        );
                       },
-                    ]}
-                    dataSource={websites}
-                  />
-                </Card.Body>
-              </Card>
-            )}
-          </BlockUI>
+                    },
+                    // {
+                    //   key: 'status',
+                    //   title: '状态',
+                    //   className: 'w-100px',
+                    //   render(value) {
+                    //     const status = allStatus.find((it) => it.value == value);
+                    //     return <Badge color={status?.color as any}>{status?.label}</Badge>;
+                    //   },
+                    // },
+                    // {
+                    //   key: 'createdAt',
+                    //   title: '创建时间',
+                    //   width: 150,
+                    //   sorter: true,
+                    //   sortOrder: sorter.field == 'createdAt' ? sorter.order : undefined,
+                    // },
+                    {
+                      key: 'actions',
+                      title: '操作',
+                      width: 100,
+                      render: (_, record) => {
+                        return (
+                          <Actions
+                            onDelete={handleDelete}
+                            onShowQRCode={handleOpenQRCode}
+                            history={props.history}
+                            data={record as any}
+                          />
+                        );
+                      },
+                    },
+                  ]}
+                  dataSource={websites}
+                />
+              </Card.Body>
+            </Card>
+          )}
           <Modal
             title="预览二维码"
             dialogClassName="w-250px"
